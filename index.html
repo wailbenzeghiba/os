@@ -775,6 +775,13 @@
             Heart catch
         </div>
         <!-- hearts game end -->
+         <!-- Flying Plane App Icon -->
+<div class="icon" style="left: 600px; top: 200px;" onclick="flyPlane()">
+  <img src="images/pplane.png" alt="Plane Icon" style="width: 50px;" />
+  <div>Fly Plane</div>
+</div>
+         <!-- Flying Plane App Icon -->
+
         <!-- scribble pad app -->
 
         <div class="icon" style="left: 760px; top: 40px;" onclick="openScribblePad()">
@@ -1689,57 +1696,49 @@
         }
         /* scribble pad script end */
         /*plane script start */
-        function flyPlane() {
-            const container = document.getElementById("planeContainer");
-            if (!container) return;
+       function flyPlane() {
+    const container = document.getElementById("planeContainer");
+    if (!container) return;
 
-            // Remove previous plane if it exists
-            const oldPlane = document.getElementById("flyingPlane");
-            if (oldPlane) oldPlane.remove();
+    // Create unique ID for this plane
+    const planeId = "flyingPlane_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
 
-            // Create new plane element
-            const plane = document.createElement("img");
-            plane.src = "images/plane.png";
-            plane.id = "flyingPlane";
-            plane.style.position = "fixed";
-            plane.style.width = "100px";
-            plane.style.pointerEvents = "none";
-            plane.style.zIndex = "9999";
-            plane.style.opacity = "1";
-            plane.style.transition = "transform 4s linear, opacity 0.5s ease";
+    // Create new plane element
+    const plane = document.createElement("img");
+    plane.src = "images/plane.png";
+    plane.id = planeId;
+    plane.style.position = "fixed";
+    plane.style.width = "100px";
+    plane.style.pointerEvents = "none";
+    plane.style.zIndex = "9999";
+    plane.style.opacity = "1";
+    plane.style.transition = "transform 4s linear, opacity 0.5s ease";
 
-            // Set start position
-            const startTop = Math.floor(Math.random() * (window.innerHeight - 200)) + 50;
-            const descent = Math.floor(Math.random() * 100) + 30;
+    // Set random start position and descent
+    const startTop = Math.floor(Math.random() * (window.innerHeight - 200)) + 50;
+    const descent = Math.floor(Math.random() * 100) + 30;
 
-            plane.style.top = `${startTop}px`;
-            plane.style.left = `${window.innerWidth + 200}px`;
-            plane.style.transform = "translate(0, 0)";
+    plane.style.top = `${startTop}px`;
+    plane.style.left = `${window.innerWidth + 200}px`;
+    plane.style.transform = "translate(0, 0)";
 
-            // Add to DOM
-            container.appendChild(plane);
+    // Add to DOM
+    container.appendChild(plane);
 
-            // Force reflow
-            void plane.offsetWidth;
+    // Force reflow before animation starts
+    void plane.offsetWidth;
 
-            // Animate movement
-            plane.style.transform = `translate(-${window.innerWidth + 500}px, ${descent}px)`;
+    // Animate movement
+    plane.style.transform = `translate(-${window.innerWidth + 500}px, ${descent}px)`;
 
-            // Remove after flight
-            setTimeout(() => {
-                plane.style.opacity = "0";
-                setTimeout(() => {
-                    plane.remove();
-                }, 500); // let fade-out finish before removing
-            }, 4000);
-        }
-
-        // Start flying planes at random intervals
-        window.addEventListener("DOMContentLoaded", () => {
-            setInterval(() => {
-                if (Math.random() > 1) flyPlane();
-            }, 15000);
-        });
+    // After 4s flight, fade out and remove
+    setTimeout(() => {
+        plane.style.opacity = "0";
+        setTimeout(() => {
+            plane.remove();
+        }, 500); // wait for fade out
+    }, 4000);
+}
 
 
 
