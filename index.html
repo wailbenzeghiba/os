@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filiz OS 💖</title>
+    <style>
+        /* 🍓 Strawberry patterned background for loading screen */
+        #loading-screen {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-color: #fff0f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 9999;
+            overflow: hidden;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: #ff1493;
+            /* diagonal repeating strawberry pattern */
+            background-image: repeating-linear-gradient(45deg,
+                    transparent 0 40px,
+                    url('images/strawberry.png') 0 48px);
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: #ff69b4;
+            animation: loadAnim 2.5s forwards;
+            z-index: 2;
+        }
+
+        /* 🍓 Falling strawberries animation */
+        #loading-screen::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            /* allows enough height for scrolling */
+            background-image: url('images/strawberry.png');
+            background-repeat: repeat;
+            background-size: 48px 48px;
+            animation: fallLoop 10s linear infinite;
+            pointer-events: none;
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        @keyframes fallLoop {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 0 100%;
+            }
+        }
+
+        @keyframes loadAnim {
+            from {
+                width: 0%;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Press Start 2P', cursive;
+            background-color: #ffd3e0;
+            height: 100vh;
+            overflow: hidden;
+            cursor: url('images/normal mouse.png'), default;
+
+        }
+
+        .desktop {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 40px);
+            padding: 20px;
+            box-sizing: border-box;
+            display: none;
+            background: repeating-linear-gradient(45deg, #ffe4f2, #ffe4f2 10px, #ffd6e5 10px, #ffd6e5 20px);
+        }
+
+        .icon {
+            width: 80px;
+            text-align: center;
+            margin: 10px;
+            cursor: grab;
+            display: inline-block;
+            position: absolute;
+            user-select: none;
+        }
+
+        .icon img {
+            width: 64px;
+            height: 64px;
+            display: block;
+            margin: 0 auto 4px;
+            pointer-events: none;
+        }
+
+        .window {
+            width: 300px;
+            background: #fff0f5;
+            border: 2px solid #ff69b4;
+            border-radius: 4px;
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            display: none;
+            box-shadow: 4px 4px #ff69b4;
+        }
+
+        .title-bar {
+            background: #ff69b4;
+            color: white;
+            padding: 8px;
+            font-size: 10px;
+            cursor: grab;
+        }
+
+        .content {
+            padding: 10px;
+            font-size: 10px;
+            color: #333;
+        }
+
+        .close-btn {
+            float: right;
+            cursor: pointer;
+        }
+
+
+
+        .loading-text {
+            margin-bottom: 20px;
+            z-index: 2;
+        }
+
+        .loading-bar-container {
+            width: 240px;
+            height: 16px;
+            background: #fff;
+            border: 2px solid #ff69b4;
+            box-shadow: 2px 2px #ff69b4;
+            z-index: 2;
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: #ff69b4;
+            animation: loadAnim 2.5s forwards;
+            z-index: 2;
+        }
+
+        @keyframes loadAnim {
+            from {
+                width: 0%;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        #create-folder {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            padding: 5px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .taskbar {
+            height: 40px;
+            background: #ff69b4;
+            color: white;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            box-shadow: 0 -2px #ff1493 inset;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .taskbar button {
+            background: transparent;
+            height: 32px;
+            padding: 0 10px;
+            border: 2px solid #fff;
+            color: white;
+        }
+
+        .taskbar button img {
+            height: 96px;
+
+        }
+
+        .clock {
+            margin-left: auto;
+            font-size: 8px;
+        }
+
+        /* start menu styles */
+        .start-button {
+            background: #fff0f5;
+            border: 2px solid #fff;
+            margin-right: 10px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            padding: 2px 4px;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .start-menu {
+            position: absolute;
+            bottom: 40px;
+            left: 10px;
+            width: 160px;
+            background: #fff0f5;
+            border: 2px solid #ff69b4;
+            display: none;
+            box-shadow: 4px 4px #ff69b4;
+            font-family: 'Press Start 2P', cursive;
+            z-index: 1000;
+        }
+
+        .start-menu-content {
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .start-item {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            padding: 6px;
+            cursor: pointer;
+            border-bottom: 1px solid #ffc0cb;
+        }
+
+        .start-item img {
+            width: 32px;
+            height: 32px;
+            margin-right: 6px;
+        }
+
+        .start-item:last-child {
+            border-bottom: none;
+        }
+
+        .start-item:hover {
+            background: #ffe4f2;
+        }
+
+        /* anime girl css */
+        .anime-girl {
+            position: absolute;
+            cursor: grab;
+            user-select: none;
+            width: 80px;
+            height: auto;
+        }
+
+        .girl-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .effect-image {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 32px;
+            pointer-events: none;
+            animation: pop 1s ease-out forwards;
+        }
+
+        @keyframes pop {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(10px) scale(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(-10px) scale(1.2);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-30px) scale(0.5);
+            }
+        }
+
+        /* anime girl css end */
+        /* music player styles */
+        #shuffleBtn:hover,
+        #loopBtn:hover {
+            background-color: #ffcde3;
+        }
+
+        #shuffleBtn.active,
+        #loopBtn.active {
+            background-color: #ff99c8;
+            border-radius: 6px;
+        }
+
+        #musicPlayer .window-content {
+            padding: 15px;
+            font-family: sans-serif;
+            text-align: center;
+        }
+
+        #nowPlaying {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #progressContainer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        #progressBar {
+            flex-grow: 1;
+        }
+
+        #currentTime,
+        #duration {
+            font-size: 12px;
+            width: 40px;
+            text-align: center;
+        }
+
+        #controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 10px;
+        }
+
+        /* General button reset for all */
+        #controls button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Image sizing for all control buttons */
+        #controls button img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        /* Central play/pause button styled like Spotify */
+        .center-btn {
+            width: 55px;
+            height: 55px;
+            background-color: #1db954;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .center-btn:hover {
+            background-color: #1ed760;
+        }
+
+        .center-btn img {
+            width: 28px;
+            height: 28px;
+        }
+
+
+
+        #volumeControl {
+            margin-top: 10px;
+        }
+
+
+        /* music player styles end */
+        /*       Love Letter App styles */
+        #loveLetterApp {
+            border: 3px solid #ffb6c1;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+            background: linear-gradient(135deg, #fff0f5, #ffe4e1);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        #loveLetterApp .title-bar {
+            background-color: #ff69b4;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #loveLetterApp .close-btn {
+            cursor: pointer;
+            color: white;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        #loveLetterApp .close-btn:hover {
+            color: #ffcccc;
+        }
+
+        #loveLetterApp .content {
+            padding: 15px;
+            font-size: 13px;
+            text-align: center;
+            color: #d63384;
+        }
+
+        #loveLetterApp .content button {
+            margin: 8px;
+            padding: 10px 14px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #loveLetterApp .content button:hover {
+            background-color: #ff1493;
+        }
+
+        #loveLetterApp .content strong {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 10px;
+            color: #c71585;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* love letter styles end */
+        /* hearts game styles */
+        #heartsGameWindow canvas {
+            border: 2px solid #ff99c8;
+            border-radius: 10px;
+        }
+
+        #heartsGameCanvas {
+            border: 2px solid #ff99c8;
+            border-radius: 10px;
+            background-color: transparent;
+        }
+
+        #heartsGameArea {
+            background: url('images/game-bg.png') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            width: 400px;
+            height: 440px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+        }
+
+        /* scribble app*/
+        #scribbleCanvas {
+            user-select: none;
+            -webkit-user-drag: none;
+            cursor: crosshair;
+        }
+
+        /*scribble app end */
+        /* plane style */
+        #flyingPlane {
+            position: fixed;
+            top: 20vh;
+            left: 100vw;
+            width: 100px;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 1;
+            transition: transform 4s linear, opacity 0.5s ease;
+        }
+
+
+        /* flying plane end */
+        /* gafa 3d styles */
+        #gafaWindow {
+            width: 640px;
+            height: 480px;
+        }
+
+        #gafaWindow .content {
+            height: calc(100% - 30px);
+            /* Adjust if your title bar is different */
+        }
+
+        /* gafa 3d styles end */
+        /* bow trail */
+        .bow-trail {
+            position: fixed;
+            width: 26px;
+            /* Adjust to your desired size */
+            height: 26px;
+            pointer-events: none;
+            animation: fadeOut 1s forwards;
+            z-index: 9999;
+            user-select: none;
+            transform-origin: center center;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.5) rotate(20deg);
+            }
+        }
+
+        /* bow trail end */
+        /* bunny css */
+        #desktopBunny {
+            position: fixed;
+            bottom: 10px;
+            right: 30px;
+            width: 100px;
+            z-index: 9999;
+            user-select: none;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        #bunnyBubble {
+            position: fixed;
+            bottom: 120px;
+            right: 40px;
+            background-color: #fff;
+            color: #444;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-family: "Comic Sans MS", cursive;
+            font-size: 14px;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+            white-space: nowrap;
+            z-index: 10000;
+            display: none;
+        }
+
+        /* bunny css end */
+
+        /*hearts game styles end */
+        /* heart and bow rain styles */
+        @keyframes swayFall {
+  0% {
+    transform: rotate(0deg) translateX(0);
+  }
+  25% {
+    transform: rotate(15deg) translateX(-10px);
+  }
+  50% {
+    transform: rotate(0deg) translateX(10px);
+  }
+  75% {
+    transform: rotate(-15deg) translateX(-10px);
+  }
+  100% {
+    transform: rotate(0deg) translateX(0);
+    top: 110vh;
+  }
+}
+
+.rain-image {
+  position: fixed;
+  top: -50px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.9;
+  animation: swayFall 5s linear forwards;
+}
+
+/*heart and bow rain styles end */
+/* backgrounds */ 
+.desktop.bg-hearts {
+  background: radial-gradient(circle at 20% 30%, #ffe6f0, #ffcce0);
+}
+
+.desktop.bg-bows {
+  background: repeating-linear-gradient(
+    45deg,
+    #fce4ec,
+    #fce4ec 10px,
+    #f8bbd0 10px,
+    #f8bbd0 20px
+  );
+}
+
+.desktop.bg-cottoncandy {
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+}
+
+.desktop.bg-stars {
+  background: radial-gradient(circle at top left, #fff0f5, #ffe4e1);
+  background-image: repeating-radial-gradient(circle, #fff 1px, transparent 10px);
+  background-size: 100px 100px;
+}
+
+
+/* backgrounds end */ 
+    </style>
+</head>
+
+<body>
+    <!-- hearts game  sfx -->
+
+    <audio id="catchSound" src="images/hitHurt.wav" preload="auto"></audio>
+    <audio id="loseHeartSound" src="images/explosion.wav" preload="auto"></audio>
+    <!-- hearts game  sfx end -->
+
+    <div id="heartRain" style="position:fixed; pointer-events:none; z-index:999;"></div>
+    <div id="loading-screen">
+        <div class="loading-text">Filiz OS is booting...</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('desktop').style.display = 'block';
+            }, 2500);
+        });
+    </script>
+
+    <audio id="meowSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+    <audio id="clickSound" src="images/click.mp3" preload="auto"></audio>
+
+
+    <div class="desktop" id="desktop">
+        <button id="create-folder">+ Folder</button>
+        <!-- spawn anime -->
+        <div class="icon" style="left: 280px; top: 40px;" onclick="spawnAnimeGirl()">
+            <img src="images/anime.png" alt="Anime Girl">
+            Girl
+        </div>
+        <!-- spawn Anime end -->
+        <!-- gafa 3d -->
+
+        <div class="icon" style="top: 300px; left: 100px;" onclick="openGafaGame()">
+            <img src="images/images.png" alt="Gafa 3D">
+            <div>Wolf 3D</div>
+        </div>
+        <!-- gafa 3d end -->
+
+        <!-- love letter app -->
+        <div class="icon" style="left: 520px; top: 40px;" onclick="openLoveLetterApp()">
+            <img src="images/love letter.png" alt="Love Letter">
+            Love Letter
+        </div>
+        <!-- love letter app end -->
+        <!-- folder namer -->
+        <div id="folder-namer" class="window" style="display:none; top: 150px; left: 150px;">
+            <div class="title-bar">
+                New Folder
+                <span class="close-btn" onclick="closeWindow('folder-namer')">✖</span>
+            </div>
+            <div class="content">
+                <input id="folderNameInput" type="text" placeholder="Folder name"
+                    style="width: 90%; padding: 4px; font-family: 'Press Start 2P', cursive; font-size: 10px; margin-bottom: 10px;"><br>
+                <button onclick="createFolderFromInput()"
+                    style="font-family: 'Press Start 2P', cursive; font-size: 10px; padding: 4px;">Create</button>
+            </div>
+        </div>
+        <!-- folder namer end -->
+        <!-- notes -->
+
+        <div class="icon" style="left: 40px; top: 40px;" onclick="openWindow('notes')">
+            <img src="images/note.png" alt="Notes">
+            Note
+        </div>
+        <!-- notes end -->
+        <!-- music player -->
+
+        <div class="icon" style="left: 400px; top: 40px;" onclick="openMusicPlayer()">
+            <img src="images/music.png" alt="Music Player">
+            Music Player
+        </div>
+        <!-- music player end -->
+        <!-- hearts game -->
+        <div class="icon" style="left: 640px; top: 40px;" onclick="openHeartsGameWindow()">
+            <img src="images/heart.png" alt="Catch the Hearts">
+            Heart catch
+        </div>
+        <!-- hearts game end -->
+        <!-- scribble pad app -->
+
+        <div class="icon" style="left: 760px; top: 40px;" onclick="openScribblePad()">
+            <img src="images/scribblepad.png" alt="Scribble Pad">
+            <div>Scribble Pad</div>
+            <!-- scribble pad app end -->
+
+        </div>
+        <!--  gallery -->
+
+        <div class="icon" style="left: 160px; top: 40px;" onclick="openWindow('gallery')">
+            <img src="images/gallert.png" alt="Gallery">
+            Gallery
+        </div>
+        <!-- gallery end -->
+    </div>
+    <!-- gafa 3d  -->
+    <div id="gafaWindow" class="window" style="width: 800px; height: 600px; display: none;">
+        <div class="title-bar">Gafa 3D
+            <span class="close-btn" onclick="shutdownGafaGame(); closeWindow('gafaWindow')">✖</span>
+        </div>
+        <div id="gafaContent" class="content" style="padding: 0; height: calc(100% - 30px); overflow: hidden;">
+            <!-- iframe will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- gafa 3d end -->
+
+    </div>
+    <!-- hearts game -->
+    <div id="heartsGameWindow" class="window" style="display: none; top: 150px; left: 150px; width: 420px;">
+        <div class="title-bar" onmousedown="startDrag(event, this.parentElement)">
+            ❤️ Catch the Hearts
+            <span class="close-btn" onclick="closeWindow('heartsGameWindow')">✖</span>
+        </div>
+        <div class="window-content">
+            <div id="heartsGameArea" style="position: relative; width: 100%; height: 100%;">
+                <canvas id="heartsGameCanvas" width="400" height="440"
+                    style="background: #ffe6f0; border-radius: 8px;"></canvas>
+
+                <div id="gameOverScreen" style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 400px;
+                height: 440px;
+                background: rgba(255, 255, 255, 0.9);
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-family: 'Arial', sans-serif;
+                font-size: 18px;
+                color: #ff3366;
+                text-align: center;
+                padding: 20px;
+            ">
+                    <div id="finalScoreText" style="margin-bottom: 16px;">You caught 0 hearts!</div>
+                    <button onclick="restartHeartsGame()" style="
+                    background: #ff69b4;
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                ">Restart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- hearts game end -->
+    <!-- scribble pad app -->
+
+    <div class="window" id="scribblePadWindow">
+        <div class="title-bar">
+            Scribble Pad
+            <span class="close-btn" onclick="closeWindow('scribblePadWindow')">✖</span>
+        </div>
+        <div class="content">
+            <div style="margin-bottom: 8px;">
+                <button onclick="changeColor('#ff1493')">💖</button>
+                <button onclick="changeColor('#00bfff')">💙</button>
+                <button onclick="changeColor('#32cd32')">💚</button>
+                <button onclick="changeColor('#000')">🖤</button>
+                <button onclick="changeColor('#ffffff')">🧽 Erase</button>
+            </div>
+            <canvas id="scribbleCanvas" width="260" height="200"
+                style="border:1px solid #ccc; background:#fff;"></canvas>
+        </div>
+    </div>
+    <!-- scribble pad app end -->
+
+
+    <!-- music player -->
+
+    <div id="musicPlayer" class="window" style="display: none; left: 100px; top: 100px; width: 320px;">
+        <div class="title-bar" onmousedown="startDrag(event, this.parentElement)"
+            style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="title">🎵 Music Player</div>
+            <span class="close-btn" onclick="closeWindow('musicPlayer')" style="cursor: pointer;">✖</span>
+        </div>
+
+        <div class="window-content">
+            <div id="nowPlaying">Now Playing: None</div>
+
+            <!-- Progress bar -->
+            <div id="progressContainer">
+                <span id="currentTime">0:00</span>
+                <input type="range" id="progressBar" value="0" min="0" max="100">
+                <span id="duration">0:00</span>
+            </div>
+
+            <!-- Controls -->
+
+            <div id="playerControls" style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+                <button id="loopBtn" onclick="toggleLoop()">
+                    <img src="images/repeat.png" width="16">
+                </button>
+                <button id="prevBtn" onclick="prevSong()">
+                    <img src="images/skip backwards.png" width="16">
+                </button>
+
+                <button id="playPauseBtn" onclick="togglePlayPause()">
+                    <img id="playPauseIcon" src="images/play.png" width="16">
+                </button>
+
+                <button id="nextBtn" onclick="nextSong()">
+                    <img src="images/skip forward.png" width="16">
+                </button>
+
+                <button id="shuffleBtn" onclick="toggleShuffle()">
+                    <img src="images/shuffle.png" width="16">
+                </button>
+
+
+            </div>
+
+
+            <!-- Volume -->
+            <div id="volumeControl">
+                Volume: <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+            </div>
+
+            <audio id="audioPlayer"></audio>
+        </div>
+    </div>
+
+    <!-- music player end -->
+    <!-- Settings -->
+<div id="settings" class="window" style="display: none; width: 300px;">
+  <div class="title-bar">
+    <span>✨ Settings</span>
+    <span class="close-btn" onclick="closeWindow('settings')">✖</span>
+  </div>
+
+  <div class="window-content" style="padding: 15px; font-family: 'Comic Sans MS', cursive; background: #fff0f6; color: #333;">
+    <h3 style="margin-top: 0;">🌈 Effects</h3>
+    <div class="settings-section" style="margin-bottom: 20px;">
+      <label style="display: flex; align-items: center; gap: 10px;">
+        <input type="checkbox" onchange="toggleHeartBowRain(this.checked)">
+        Heart & Bow Rain
+      </label>
+    </div>
+
+    <h3>🎨 Change Background</h3>
+    <div class="settings-section" style="display: flex; flex-direction: column; gap: 10px;">
+      <button onclick="changeBackground('bg-hearts')" style="padding: 6px; border-radius: 8px;">💖 Hearts</button>
+      <button onclick="changeBackground('bg-bows')" style="padding: 6px; border-radius: 8px;">🎀 Bows</button>
+      <button onclick="changeBackground('bg-cottoncandy')" style="padding: 6px; border-radius: 8px;">🍭 Cotton Candy</button>
+      <button onclick="changeBackground('bg-stars')" style="padding: 6px; border-radius: 8px;">🌟 Stars</button>
+    </div>
+  </div>
+</div>
+<!-- music player end -->
+    <!-- BUNNY -->
+
+    <img src="images/output-onlinegiftools (1).gif" id="desktopBunny" style="display: none;" alt="Sleepy Bunny">
+    <div id="bunnyBubble" style="display: none;"></div>
+
+    <!-- BUNNY END -->
+
+    <!-- Love Letter App Window -->
+    <div id="loveLetterApp" class="window" style="display: none; top: 200px; left: 200px; width: 400px;">
+        <div class="title-bar">
+            Love Letter Quiz
+            <span class="close-btn" onclick="closeWindow('loveLetterApp')">✖</span>
+        </div>
+        <div class="content" id="quizContent" style="padding: 15px; font-family: sans-serif;">
+            <!-- Quiz content will be injected here -->
+        </div>
+    </div>
+    <!-- Love Letter App Window End -->
+
+
+    <div id="windows-container"></div>
+    <div id="start-menu" class="start-menu">
+        <div class="start-menu-content">
+            <div class="start-item" onclick="openWindow('notes')">
+                <img src="images/notes.png" alt="Notes"> Notes
+            </div>
+            <div class="start-item" onclick="openWindow('gallery')">
+                <img src="images/gallery.png" alt="Gallery"> Gallery
+            </div>
+            <div class="start-item" onclick="openWindow('settings')">
+                <img src="images/folder.png" alt="More"> Settings
+            </div>
+        </div>
+    </div>
+
+    <div class="taskbar">
+        <button id="start-button" class="start-button">
+            <img src="images/hello.png" alt="Start"
+                style="height: 32px; padding-bottom: 10px ; vertical-align: middle;">
+        </button>
+
+        <div class="clock" id="clock"></div>
+    </div>
+
+    <div id="notes" class="window">
+        <div class="title-bar">
+            My Notes
+            <span class="close-btn" onclick="closeWindow('notes')">✖</span>
+        </div>
+        <div class="content">
+            I LOVE YOU ❤️
+        </div>
+    </div>
+
+    <div id="gallery" class="window">
+        <div class="title-bar">
+            Our Gallery
+            <span class="close-btn" onclick="closeWindow('gallery')">✖</span>
+        </div>
+        <div class="content">
+            <img src="images/us.jpg" alt="Cute pic" style="width:100%; border: 2px solid #ff69b4;">
+            <p>This is us! 🐱❤️</p>
+        </div>
+    </div>
+
+    <script>
+        /* music player script start */
+        const playlist = [
+            { title: "8 bit Paradise – kawaii", src: "music/8 bit Paradise – kawaii.mp3" },
+            { title: "Memo  cute, 8 bit - chiptune", src: "music/Memo  cute, 8 bit, chiptune.mp3" },
+            { title: "OMORI OST - 017 Forest Chillin", src: "music/OMORI OST - 017 Forest Chillin.mp3" },
+            { title: "A Lonely Cherry Tree 🌸", src: "music/A Lonely Cherry Tree 🌸.mp3" },
+            { title: "An Ancient King 👑", src: "music/An Ancient King 👑.mp3" },
+            { title: "Begin Your Journey 🛣️", src: "music/Begin Your Journey 🛣️.mp3" },
+            { title: "Undertale OST 085 - Fallen Down", src: "music/Undertale OST 085 - Fallen Down (Reprise).mp3" },
+            { title: "Begin Mice On Venus.mp3", src: "music/Mice On Venus.mp3" },
+
+        ];
+
+        let currentSongIndex = 0;
+        let isShuffle = false;
+        let isLoop = false;
+
+        const audio = document.getElementById("audioPlayer");
+        const progressBar = document.getElementById("progressBar");
+        const currentTimeEl = document.getElementById("currentTime");
+        const durationEl = document.getElementById("duration");
+
+        function openMusicPlayer() {
+            document.getElementById("musicPlayer").style.display = "block";
+            loadSong(currentSongIndex);
+        }
+
+        function closeMusicPlayer() {
+            document.getElementById("musicPlayer").style.display = "none";
+            audio.pause();
+        }
+
+        function loadSong(index) {
+            const song = playlist[index];
+            audio.src = song.src;
+            document.getElementById("nowPlaying").textContent = "Now Playing: " + song.title;
+            audio.play();
+        }
+
+        function nextSong() {
+            if (isShuffle) {
+                currentSongIndex = Math.floor(Math.random() * playlist.length);
+            } else {
+                currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            }
+            loadSong(currentSongIndex);
+        }
+
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+            loadSong(currentSongIndex);
+        }
+
+        function toggleShuffle() {
+            isShuffle = !isShuffle;
+            const shuffleBtn = document.getElementById("shuffleBtn");
+            shuffleBtn.classList.toggle("active", isShuffle);
+        }
+
+        function toggleLoop() {
+            isLoop = !isLoop;
+            audio.loop = isLoop;
+            const loopBtn = document.getElementById("loopBtn");
+            loopBtn.classList.toggle("active", isLoop);
+        }
+
+        // Update progress bar as song plays
+        audio.addEventListener("timeupdate", () => {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressBar.value = progress || 0;
+
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+            durationEl.textContent = formatTime(audio.duration);
+        });
+
+        // Seek song when clicking progress bar
+        progressBar.addEventListener("input", () => {
+            audio.currentTime = (progressBar.value / 100) * audio.duration;
+        });
+
+        // Auto next song if not looping
+        audio.addEventListener("ended", () => {
+            if (!audio.loop) nextSong();
+        });
+
+        // Volume control
+        document.getElementById("volumeSlider").addEventListener("input", (e) => {
+            audio.volume = e.target.value;
+        });
+
+        // Time formatting
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
+            return `${minutes}:${secs}`;
+        }
+        function togglePlayPause() {
+            const btn = document.getElementById("playPauseBtn");
+            const icon = document.getElementById("playPauseIcon");
+
+            if (audio.paused) {
+                audio.play();
+                icon.src = "images/pause.png"; // Path to your pause icon
+            } else {
+                audio.pause();
+                icon.src = "images/play.png"; // Path to your play icon
+            }
+        }
+
+
+
+        // Also update icon if the song ends or loads
+        audio.addEventListener("play", () => {
+            const icon = document.getElementById("playPauseIcon");
+            icon.src = "images/pause.png"; // Change to your pause image path
+        });
+
+        audio.addEventListener("pause", () => {
+            const icon = document.getElementById("playPauseIcon");
+            icon.src = "images/play.png"; // Change to your play image path
+        });
+
+        function loadSong(index) {
+            const song = playlist[index];
+            audio.src = song.src;
+            document.getElementById("nowPlaying").textContent = "Now Playing: " + song.title;
+            audio.play();
+        }
+
+
+        /* music player script end */
+        /* task bar button script start */
+        const startButton = document.getElementById('start-button');
+        const startMenu = document.getElementById('start-menu');
+
+        startButton.addEventListener('click', () => {
+            const isVisible = startMenu.style.display === 'block';
+            startMenu.style.display = isVisible ? 'none' : 'block';
+            bringToFront(startMenu);
+        });
+
+        // Optional: Close the menu if user clicks elsewhere
+        document.addEventListener('click', (e) => {
+            if (!startButton.contains(e.target) && !startMenu.contains(e.target)) {
+                startMenu.style.display = 'none';
+            }
+        });
+        /* task bar button script end */
+        function openWindow(id) {
+            const win = document.getElementById(id);
+            win.style.display = 'block';
+            bringToFront(win);
+        }
+        function createFolderFromInput() {
+            const input = document.getElementById('folderNameInput');
+            const folderName = input.value.trim();
+            if (!folderName) return;
+
+            const timestamp = Date.now();
+            const winId = `folder-${timestamp}`;
+
+            // Create the folder window
+            const win = document.createElement('div');
+            win.className = 'window';
+            win.id = winId;
+            win.innerHTML = `
+    <div class="title-bar">
+      ${folderName}
+      <span class="close-btn" onclick="closeWindow('${winId}')">✖</span>
+    </div>
+    <div class="content">
+      This is an empty folder.
+    </div>
+  `;
+            document.getElementById('windows-container').appendChild(win);
+            makeDraggable(win);
+            openWindow(winId);
+
+            // Create desktop icon
+            const icon = document.createElement('div');
+            icon.className = 'icon';
+            icon.style.left = `${Math.random() * 500 + 20}px`;
+            icon.style.top = `${Math.random() * 300 + 20}px`;
+            icon.onclick = () => openWindow(winId);
+            icon.innerHTML = `
+    <img src="images/folder.png" alt="Folder">
+    ${folderName}
+  `;
+            document.getElementById('desktop').appendChild(icon);
+            makeDraggable(icon);
+
+            // Optional: Add a button to the taskbar (or skip this if you don't want to clutter it)
+            const btn = document.createElement('button');
+            btn.textContent = folderName;
+            btn.onclick = () => openWindow(winId);
+            document.querySelector('.taskbar').insertBefore(btn, document.getElementById('clock'));
+
+            // Clean up
+            input.value = '';
+            closeWindow('folder-namer');
+        }
+
+
+
+        function closeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+            // Stop music if it's the music player window
+            if (id === 'musicPlayer') {
+                const audio = document.getElementById('audioPlayer');
+                audio.pause();
+                audio.currentTime = 0; // optional: reset song to start
+            }
+            if (id === 'gafaWindow') {
+                shutdownGafaGame();
+            }
+        }
+
+        function bringToFront(el) {
+            let max = 0;
+            document.querySelectorAll('.window').forEach(w => {
+                const z = parseInt(window.getComputedStyle(w).zIndex) || 0;
+                if (z > max) max = z;
+            });
+            el.style.zIndex = max + 1;
+        }
+
+        function makeDraggable(el) {
+            let isDragging = false;
+            let offsetX = 0, offsetY = 0;
+
+            function onMouseMove(e) {
+                if (!isDragging) return;
+                el.style.left = `${e.clientX - offsetX}px`;
+                el.style.top = `${e.clientY - offsetY}px`;
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+                document.body.style.userSelect = '';
+            }
+
+            el.addEventListener('mousedown', function (e) {
+                if (e.target.closest('.close-btn')) return;
+                isDragging = true;
+                offsetX = e.clientX - el.offsetLeft;
+                offsetY = e.clientY - el.offsetTop;
+                document.body.style.userSelect = 'none';
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+        }
+
+        document.querySelectorAll('.window').forEach(win => makeDraggable(win));
+        document.querySelectorAll('.icon').forEach(icon => makeDraggable(icon));
+
+        document.getElementById('create-folder').addEventListener('click', () => {
+            openWindow('folder-namer');
+            bringToFront(document.getElementById('folder-namer'));
+        });
+
+
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                document.querySelector('.desktop').style.display = 'block';
+                document.getElementById('meowSound').play();
+            }, 2500);
+        });
+
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const clock = document.getElementById('clock');
+            if (clock) clock.textContent = `${hours}:${minutes}`;
+        }
+        setInterval(updateClock, 1000);
+        window.addEventListener('DOMContentLoaded', updateClock);
+        /* click sound effect */
+        document.addEventListener('mouseup', () => {
+            const clickSound = document.getElementById('clickSound');
+            if (clickSound) {
+                clickSound.currentTime = 0; // rewind to start
+                clickSound.play();
+            }
+        });
+
+        /* click sound effect end */
+        /* spawn Anime */
+        function spawnAnimeGirl() {
+            const girlId = `anime-girl-${Date.now()}`;
+            const girl = document.createElement('div');
+            girl.className = 'anime-girl';
+            girl.style.left = `${Math.random() * 500 + 50}px`;
+            girl.style.top = `${Math.random() * 300 + 50}px`;
+            girl.innerHTML = `
+    <img src="images/anime.png" alt="Anime Girl" class="girl-img">
+  `;
+            girl.id = girlId;
+
+            girl.addEventListener('mouseup', () => {
+                const effect = document.createElement('img');
+                effect.src = 'images/love.png'; // 🌟 heart/sparkle/etc.
+                effect.className = 'effect-image';
+                girl.appendChild(effect);
+
+                setTimeout(() => {
+                    effect.remove();
+                }, 1000); // disappears after 1 second
+            });
+
+            document.getElementById('desktop').appendChild(girl);
+            makeDraggable(girl);
+        }
+        /* spawn Anime end */
+        /* Love Letter App */
+        function openLoveLetterApp() {
+            document.getElementById("loveLetterApp").style.display = "block";
+            startLoveLetterQuiz();
+        }
+
+        const questions = [
+            {
+                question: "Where did we first meet?",
+                options: ["Instagram", "Discord", "Facebook", "Café lol"],
+                answer: 1
+            },
+            {
+                question: "What’s my favorite food?",
+                options: ["Pizza", "Burger", "Kouskous", "Pasta"],
+                answer: 0
+            },
+            {
+                question: "Which movie did we watch first together?",
+                options: ["Inception", "Grave of the fireflies", "Your Name", "Interstellar"],
+                answer: 3
+            },
+            {
+                question: "What's my eye color?",
+                options: ["Brown", "Green", "Greenish Brown", "hazel"],
+                answer: 3
+            },
+            {
+                question: "What’s my favorite color?",
+                options: ["Blue", "Pink", "Pistachio Green", "Orange"],
+                answer: 2
+            },
+            {
+                question: "What’s my favorite animal?",
+                options: ["Cat", "Parrot", "Rabbit", "Hamster"],
+                answer: 1
+            },
+            {
+                question: "What’s my favorite hobby?",
+                options: ["Reading", "Cooking", "Gaming", "Traveling"],
+                answer: 2
+            },
+            {
+                question: "What's my brother's name?",
+                options: ["yasser", "faycel", "redha", "yassine"],
+                answer: 0
+            },
+            {
+                question: "how tall am i ? (cm)",
+                options: ["1.83", "1.80", "1.63", "1.60"],
+                answer: 0
+            },
+            {
+                question: "What's my favorite fruit",
+                options: ["Mango", "Peach", "Apple", "Pineapple"],
+                answer: 2
+            },
+            {
+                question: "What was the day we first met?",
+                options: ["July 18th", "June 12th", "August 2nd", "July 9th"],
+                answer: 1
+            },
+            {
+                question: "When did we start dating?",
+                options: ["August 20th", "August 19th", "August 22nd", "August 18th"],
+                answer: 3
+            },
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function startLoveLetterQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            let html = `<div style="margin-bottom:10px;"><strong>${q.question}</strong></div>`;
+            q.options.forEach((opt, index) => {
+                html += `<button onclick="answerQuestion(${index})" style="display:block;margin:5px;">${opt}</button>`;
+            });
+            document.getElementById("quizContent").innerHTML = html;
+        }
+
+        function answerQuestion(selected) {
+            const q = questions[currentQuestion];
+            if (selected === q.answer) score++;
+
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            let msg = `You got ${score} out of ${questions.length} right!<br>`;
+            if (score === questions.length) {
+                msg += "💖 You know everything about me!";
+            } else if (score >= 2) {
+                msg += "😊 Pretty good, you know me well!";
+            } else {
+                msg += "😅 We need to talk...";
+            }
+
+            msg += `<br><button onclick="closeWindow('loveLetterApp')">Close</button>`;
+            document.getElementById("quizContent").innerHTML = msg;
+            if (score === questions.length) {
+                msg += "💖 You know everything about me!";
+                startHeartRain();
+            }
+
+        }
+        function startHeartRain() {
+            const heartRain = document.getElementById("heartRain");
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement("div");
+                heart.textContent = "💖";
+                heart.style.position = "fixed";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.top = "-20px";
+                heart.style.fontSize = "24px";
+                heart.style.animation = `fall ${2 + Math.random() * 3}s linear forwards`;
+                heartRain.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }
+        }
+
+
+        /* Love Letter App end */
+        /* hearts game script start */
+        function openHeartsGameWindow() {
+            const window = document.getElementById("heartsGameWindow");
+            window.style.display = "block";
+            window.style.zIndex = 999;
+            startHeartsGame();
+        }
+
+        let heartGameRunning = false;
+        let baseSpeed = 12;
+
+
+        function startHeartsGame() {
+            if (heartGameRunning) return;
+            const catchSound = document.getElementById("catchSound");
+            const loseHeartSound = document.getElementById("loseHeartSound");
+            const canvas = document.getElementById("heartsGameCanvas");
+            const ctx = canvas.getContext("2d");
+            const overlay = document.getElementById("gameOverScreen");
+            const finalScoreText = document.getElementById("finalScoreText");
+
+            const basketImg = new Image();
+            basketImg.src = "images/Player.png";
+
+            const heartImg = new Image();
+            heartImg.src = "images/heart.png";
+
+            const bgImg = new Image();
+            bgImg.src = "images/hgbg.jpg";
+
+            const basket = { x: 170, y: 320, width: 80, height: 120 }; // adjust size if needed
+            let hearts = [];
+            let score = 0;
+            let lives = 3;
+            let spawnInterval;
+            heartGameRunning = true;
+
+            function spawnHeart() {
+                hearts.push({
+                    x: Math.random() * (canvas.width - 30),
+                    y: -30,
+                    speed: baseSpeed + Math.random() * 2
+                });
+            }
+
+            function drawHeartsUI() {
+                for (let i = 0; i < lives; i++) {
+                    ctx.drawImage(heartImg, 360 - i * 24, 10, 20, 20);
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Background
+                ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+
+                // Basket
+                ctx.drawImage(basketImg, basket.x, basket.y, basket.width, basket.height);
+
+                // Hearts
+                for (let heart of hearts) {
+                    ctx.drawImage(heartImg, heart.x, heart.y, 30, 30);
+                }
+
+                // Score
+                ctx.fillStyle = "#333";
+                ctx.font = "16px 'Press Start 2P', cursive";
+                ctx.fillText("Score: " + score, 10, 20);
+
+                // Lives
+                drawHeartsUI();
+            }
+
+            function update() {
+                for (let heart of hearts) {
+                    heart.y += heart.speed;
+                }
+
+                for (let i = hearts.length - 1; i >= 0; i--) {
+                    const h = hearts[i];
+                    if (
+                        h.y + 20 > basket.y &&
+                        h.x > basket.x &&
+                        h.x < basket.x + basket.width
+                    ) {
+                        hearts.splice(i, 1);
+                        score++;
+                        catchSound.currentTime = 0;
+                        catchSound.play();
+                    } else if (h.y > canvas.height) {
+                        hearts.splice(i, 1);
+                        lives--;
+                        loseHeartSound.currentTime = 0;
+                        loseHeartSound.play();
+
+                        if (lives <= 0) {
+                            endGame();
+                        }
+                    }
+                }
+            }
+
+            function gameLoop() {
+                if (!heartGameRunning) return;
+                update();
+                draw();
+                requestAnimationFrame(gameLoop);
+            }
+
+            function endGame() {
+                heartGameRunning = false;
+                clearInterval(spawnInterval);
+                overlay.style.display = "flex";
+                finalScoreText.textContent = `You caught ${score} heart${score === 1 ? '' : 's'}!`;
+                clearInterval(speedIncreaseInterval);
+
+            }
+
+            canvas.addEventListener("mousemove", (e) => {
+                const rect = canvas.getBoundingClientRect();
+                basket.x = e.clientX - rect.left - basket.width / 2;
+            });
+
+            spawnInterval = setInterval(spawnHeart, 800);
+            let speedIncreaseInterval = setInterval(() => {
+                baseSpeed += 0.2; // increase gradually
+                if (baseSpeed > 10) baseSpeed = 10; // cap the speed if needed
+            }, 5000); // every 5 seconds
+            gameLoop();
+        }
+
+        function restartHeartsGame() {
+            document.getElementById("gameOverScreen").style.display = "none";
+            document.getElementById("heartsGameCanvas").getContext("2d").clearRect(0, 0, 400, 440);
+            heartGameRunning = false;
+            startHeartsGame();
+        }
+
+
+        // Stop game on window close
+        function closeWindow(id) {
+            document.getElementById(id).style.display = "none";
+            if (id === "heartsGameWindow") heartGameRunning = false;
+        }
+        /* hearts game script end */
+        /* scribble pad script start */
+        function openScribblePad() {
+            document.getElementById("scribblePadWindow").style.display = "block";
+        }
+
+        const canvas = document.getElementById("scribbleCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let drawing = false;
+        let currentColor = "#000";
+
+        canvas.addEventListener("mousedown", (e) => {
+            e.stopPropagation(); // 👈 this prevents the window drag from being triggered
+            drawing = true;
+        });
+        canvas.addEventListener("touchstart", (e) => {
+            e.stopPropagation();
+            drawing = true;
+        });
+        canvas.addEventListener("mouseup", () => drawing = false);
+        canvas.addEventListener("mouseout", () => drawing = false);
+
+        canvas.addEventListener("mousemove", (e) => {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            ctx.fillStyle = currentColor;
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        function changeColor(color) {
+            currentColor = color;
+        }
+        /* scribble pad script end */
+        /*plane script start */
+        function flyPlane() {
+            const container = document.getElementById("planeContainer");
+            if (!container) return;
+
+            // Remove previous plane if it exists
+            const oldPlane = document.getElementById("flyingPlane");
+            if (oldPlane) oldPlane.remove();
+
+            // Create new plane element
+            const plane = document.createElement("img");
+            plane.src = "images/plane.png";
+            plane.id = "flyingPlane";
+            plane.style.position = "fixed";
+            plane.style.width = "100px";
+            plane.style.pointerEvents = "none";
+            plane.style.zIndex = "9999";
+            plane.style.opacity = "1";
+            plane.style.transition = "transform 4s linear, opacity 0.5s ease";
+
+            // Set start position
+            const startTop = Math.floor(Math.random() * (window.innerHeight - 200)) + 50;
+            const descent = Math.floor(Math.random() * 100) + 30;
+
+            plane.style.top = `${startTop}px`;
+            plane.style.left = `${window.innerWidth + 200}px`;
+            plane.style.transform = "translate(0, 0)";
+
+            // Add to DOM
+            container.appendChild(plane);
+
+            // Force reflow
+            void plane.offsetWidth;
+
+            // Animate movement
+            plane.style.transform = `translate(-${window.innerWidth + 500}px, ${descent}px)`;
+
+            // Remove after flight
+            setTimeout(() => {
+                plane.style.opacity = "0";
+                setTimeout(() => {
+                    plane.remove();
+                }, 500); // let fade-out finish before removing
+            }, 4000);
+        }
+
+        // Start flying planes at random intervals
+        window.addEventListener("DOMContentLoaded", () => {
+            setInterval(() => {
+                if (Math.random() > 1) flyPlane();
+            }, 15000);
+        });
+
+
+
+
+        /* plane script end */
+        /* gafa 3d script start */
+
+        function shutdownGafaGame() {
+            const iframe = document.getElementById('gafaGameIframe');
+            if (iframe) {
+                iframe.src = 'about:blank'; // stop game/audio
+                iframe.remove();
+            }
+            const windowEl = document.getElementById('gafaWindow');
+            windowEl.style.display = 'none';
+        }
+
+
+        function openGafaGame() {
+            const windowEl = document.getElementById('gafaWindow');
+            const contentEl = document.getElementById('gafaContent');
+
+            // Remove old iframe if exists (just in case)
+            const oldIframe = document.getElementById('gafaGameIframe');
+            if (oldIframe) oldIframe.remove();
+
+            // Create iframe dynamically only on demand
+            const iframe = document.createElement('iframe');
+            iframe.id = 'gafaGameIframe';
+            iframe.src = 'wolf3d-master/index.html'; // game path
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            iframe.setAttribute('tabindex', '0');
+
+            contentEl.appendChild(iframe);
+
+            // Show the game window
+            windowEl.style.display = 'block';
+        }
+
+        /* gafa 3d script end*/
+        /* bow script start */
+        let lastSpawnTime = 0;
+        const spawnInterval = 50; // ms between bows
+
+        document.addEventListener("mousemove", (e) => {
+            const now = Date.now();
+            if (now - lastSpawnTime < spawnInterval) return;
+            lastSpawnTime = now;
+
+            const bow = document.createElement("img");
+            bow.src = "images/bow.png";
+            bow.classList.add("bow-trail");
+            bow.style.left = `${e.clientX}px`;
+            bow.style.top = `${e.clientY}px`;
+
+            document.body.appendChild(bow);
+
+            setTimeout(() => {
+                bow.remove();
+            }, 1000);
+        });
+
+        /*bow script end */
+        /* bunny script start */
+        function startBunnyTalk() {
+            const bunny = document.getElementById("desktopBunny");
+            const bubble = document.getElementById("bunnyBubble");
+
+            const sleepyThoughts = [
+                "Zzz... 💤",
+                "Don't forget to rest too...",
+                "So cozy here... 🐇",
+                "You're doing great...",
+                "Can I dream next to you?",
+                "Another nap... maybe...",
+                "This OS is comfy... 💻",
+                "You smell like carrots 🥕",
+                "I love our quiet moments...",
+                "Do you think bunnies dream?",
+                "I could sleep forever... 💤",
+                "Just a little longer...",
+                "I love your company... ",
+                "Is it time for a snack? 🥕",
+                "I could nap all day... 💤",
+                "You make me feel safe... 🐰",
+                "I love our little adventures... 🐇",
+                "Do you think about me too?",
+                "Between naps, I'm not lazy, I'm energy-efficient, I’m proud of you.",
+                "Between naps, I'm not lazy, I'm energy-efficient, 💤",
+                "Between naps, being sleepy is a lifestyle, slow and snuggly wins the race.",
+                "Between naps, clouds look like marshmallows today, I’m proud of you.",
+                "Between naps, clouds look like marshmallows today, don't forget to hydrate!",
+                "Between naps, clouds look like marshmallows today, see you in dreamland.",
+                "Between naps, everything feels cozy, 💤",
+                "Between naps, it's okay to take a break, 💤",
+                "Between naps, resting is productive too, carry on, human.",
+                "Between naps, this OS smells like strawberries, I'll just stay here.",
+                "Between naps, this OS smells like strawberries, boop.",
+                "Between naps, this OS smells like strawberries, okay nap time again.",
+                "Between naps, this OS smells like strawberries, 🥕 dreams are the best.",
+                "Between naps, this place is warm, boop.",
+                "Between naps, you should stretch a little, I like your vibe.",
+                "Between naps, you should stretch a little, I’m proud of you.",
+                "Between naps, you're doing great, don't forget to hydrate!",
+                "Between naps, you're doing great, see you in dreamland.",
+                "By the way, I dreamed of a carrot castle, 🥕 dreams are the best.",
+                "By the way, I'm not lazy, I'm energy-efficient, I like being here with you.",
+                "By the way, being sleepy is a lifestyle, I like being here with you.",
+                "By the way, being sleepy is a lifestyle, I'll just stay here.",
+                "By the way, being sleepy is a lifestyle, slow and snuggly wins the race.",
+                "By the way, clouds look like marshmallows today, 💤",
+                "By the way, don't forget to blink, I like your vibe.",
+                "By the way, everything feels cozy, see you in dreamland.",
+                "By the way, everything feels cozy, 💤",
+                "By the way, it's okay to take a break, 💤",
+                "By the way, someone said bunnies can't code, okay nap time again.",
+                "By the way, there’s magic in quiet moments, don't forget to hydrate!",
+                "By the way, this OS smells like strawberries, boop.",
+                "By the way, this OS smells like strawberries, don't forget to hydrate!",
+                "By the way, this OS smells like strawberries, 🥕 dreams are the best.",
+                "By the way, you should stretch a little, see you in dreamland.",
+                "By the way, you're doing great, don't mind me.",
+                "Did you know? I dreamed of a carrot castle, don't mind me.",
+                "Did you know? clouds look like marshmallows today, 💤",
+                "Did you know? don't forget to blink, slow and snuggly wins the race.",
+                "Did you know? everything feels cozy, I like being here with you.",
+                "Did you know? it's okay to take a break, carry on, human.",
+                "Did you know? resting is productive too, I like your vibe.",
+                "Did you know? someone said bunnies can't code, I like your vibe.",
+                "Did you know? this place is warm, okay nap time again.",
+                "Hey you, I dreamed of a carrot castle, slow and snuggly wins the race.",
+                "Hey you, clouds look like marshmallows today, 💤",
+                "Hey you, don't forget to blink, I like being here with you.",
+                "Hey you, everything feels cozy, I like being here with you.",
+                "Hey you, everything feels cozy, see you in dreamland.",
+                "Hey you, it's okay to take a break, I like being here with you.",
+                "Hey you, there’s magic in quiet moments, 💤",
+                "Hey you, this place is warm, zzZzz.",
+                "Hey you, you should stretch a little, tell me if snacks arrive.",
+                "Hey you, you're doing great, tell me if snacks arrive.",
+                "Hug time! I dreamed of a carrot castle, okay nap time again.",
+                "Hug time! being sleepy is a lifestyle, I like being here with you.",
+                "Hug time! clouds look like marshmallows today, slow and snuggly wins the race.",
+                "Hug time! don't forget to blink, see you in dreamland.",
+                "Hug time! don't forget to blink, zzZzz.",
+                "Hug time! everything feels cozy, I like being here with you.",
+                "Hug time! everything feels cozy, I like your vibe.",
+                "Hug time! everything feels cozy, carry on, human.",
+                "Hug time! it's okay to take a break, don't forget to hydrate!",
+                "Hug time! there’s magic in quiet moments, boop.",
+                "Hug time! there’s magic in quiet moments, see you in dreamland.",
+                "Hug time! there’s magic in quiet moments, zzZzz.",
+                "Hug time! this OS smells like strawberries, I like your vibe.",
+                "Hug time! this OS smells like strawberries, boop.",
+                "Hug time! this OS smells like strawberries, don't forget to hydrate!",
+                "Hug time! this place is warm, don't mind me.",
+                "Hug time! you should stretch a little, tell me if snacks arrive.",
+                "Hug time! you're doing great, I'll just stay here.",
+                "I'm just a bunny but clouds look like marshmallows today, zzZzz.",
+                "I'm just a bunny but it's okay to take a break, I'll just stay here.",
+                "I'm just a bunny but it's okay to take a break, see you in dreamland.",
+                "I'm just a bunny but resting is productive too, I'll just stay here.",
+                "I'm just a bunny but someone said bunnies can't code, I'll just stay here.",
+                "I'm just a bunny but there’s magic in quiet moments, okay nap time again.",
+                "I'm just a bunny but this OS smells like strawberries, I'll just stay here.",
+                "I'm just a bunny but this OS smells like strawberries, 🥕 dreams are the best.",
+                "I'm just a bunny but this place is warm, I'll just stay here.",
+                "I'm just a bunny but this place is warm, see you in dreamland.",
+                "I'm just a bunny but this place is warm, 💤",
+                "In my dream, I'm not lazy, I'm energy-efficient, 🥕 dreams are the best.",
+                "In my dream, clouds look like marshmallows today, carry on, human.",
+                "In my dream, don't forget to blink, don't forget to hydrate!",
+                "In my dream, don't forget to blink, okay nap time again.",
+                "In my dream, don't forget to blink, slow and snuggly wins the race.",
+                "In my dream, don't forget to blink, 💤",
+                "In my dream, everything feels cozy, I like being here with you.",
+                "In my dream, it's okay to take a break, okay nap time again.",
+                "In my dream, it's okay to take a break, zzZzz.",
+                "In my dream, resting is productive too, I'll just stay here.",
+                "In my dream, resting is productive too, zzZzz.",
+                "In my dream, someone said bunnies can't code, I like your vibe.",
+                "In my dream, someone said bunnies can't code, I’m proud of you.",
+                "In my dream, someone said bunnies can't code, boop.",
+                "In my dream, this place is warm, boop.",
+                "In my dream, this place is warm, zzZzz.",
+                "In my dream, you should stretch a little, okay nap time again.",
+                "In my dream, you work too hard, okay nap time again.",
+                "In my dream, you work too hard, slow and snuggly wins the race.",
+                "In my dream, you're doing great, carry on, human.",
+                "Mmm... I dreamed of a carrot castle, I like your vibe.",
+                "Mmm... I dreamed of a carrot castle, don't mind me.",
+                "Mmm... I dreamed of a carrot castle, see you in dreamland.",
+                "Mmm... I dreamed of a carrot castle, zzZzz.",
+                "Mmm... I'm not lazy, I'm energy-efficient, I'll just stay here.",
+                "Mmm... clouds look like marshmallows today, I like your vibe.",
+                "Mmm... clouds look like marshmallows today, don't forget to hydrate!",
+                "Mmm... don't forget to blink, don't forget to hydrate!",
+                "Mmm... someone said bunnies can't code, I like your vibe.",
+                "Mmm... there’s magic in quiet moments, carry on, human.",
+                "Mmm... this place is warm, carry on, human.",
+                "Mmm... you should stretch a little, tell me if snacks arrive.",
+                "Mmm... you work too hard, boop.",
+                "Mmm... you're doing great, I’m proud of you.",
+                "Mmm... you're doing great, okay nap time again.",
+                "Mmm... you're doing great, 💤",
+                "Psst... being sleepy is a lifestyle, I'll just stay here.",
+                "Psst... clouds look like marshmallows today, 🥕 dreams are the best.",
+                "Psst... everything feels cozy, boop.",
+                "Psst... everything feels cozy, okay nap time again.",
+                "Psst... everything feels cozy, 🥕 dreams are the best.",
+                "Psst... it's okay to take a break, I’m proud of you.",
+                "Psst... it's okay to take a break, boop.",
+                "Psst... it's okay to take a break, don't forget to hydrate!",
+                "Psst... it's okay to take a break, slow and snuggly wins the race.",
+                "Psst... resting is productive too, I like your vibe.",
+                "Psst... resting is productive too, I'll just stay here.",
+                "Psst... resting is productive too, see you in dreamland.",
+                "Psst... someone said bunnies can't code, I like being here with you.",
+                "Psst... there’s magic in quiet moments, carry on, human.",
+                "Psst... this OS smells like strawberries, see you in dreamland.",
+                "Psst... you should stretch a little, I like being here with you.",
+                "Psst... you should stretch a little, 💤",
+                "Psst... you should stretch a little, 🥕 dreams are the best.",
+                "Psst... you're doing great, I like being here with you.",
+                "Psst... you're doing great, don't forget to hydrate!",
+                "Softly whispering... I dreamed of a carrot castle, I like being here with you.",
+                "Softly whispering... I dreamed of a carrot castle, I’m proud of you.",
+                "Softly whispering... I dreamed of a carrot castle, slow and snuggly wins the race.",
+                "Softly whispering... I dreamed of a carrot castle, tell me if snacks arrive.",
+                "Softly whispering... don't forget to blink, slow and snuggly wins the race.",
+                "Softly whispering... don't forget to blink, tell me if snacks arrive.",
+                "Softly whispering... it's okay to take a break, 💤",
+                "Softly whispering... someone said bunnies can't code, carry on, human.",
+                "Softly whispering... someone said bunnies can't code, 💤",
+                "Softly whispering... there’s magic in quiet moments, okay nap time again.",
+                "Softly whispering... there’s magic in quiet moments, 💤",
+                "Softly whispering... this OS smells like strawberries, okay nap time again.",
+                "Softly whispering... this place is warm, I like your vibe.",
+                "Softly whispering... you should stretch a little, don't forget to hydrate!",
+                "Softly whispering... you should stretch a little, okay nap time again.",
+                "Softly whispering... you work too hard, boop.",
+                "Softly whispering... you work too hard, don't mind me.",
+                "Yawn... I dreamed of a carrot castle, carry on, human.",
+                "Yawn... I'm not lazy, I'm energy-efficient, carry on, human.",
+                "Yawn... being sleepy is a lifestyle, I’m proud of you.",
+                "Yawn... being sleepy is a lifestyle, zzZzz.",
+                "Yawn... clouds look like marshmallows today, I like being here with you.",
+                "Yawn... clouds look like marshmallows today, I'll just stay here.",
+                "Yawn... clouds look like marshmallows today, boop.",
+                "Yawn... don't forget to blink, I like being here with you.",
+                "Yawn... don't forget to blink, I'll just stay here.",
+                "Yawn... don't forget to blink, boop.",
+                "Yawn... don't forget to blink, see you in dreamland.",
+                "Yawn... don't forget to blink, 💤",
+                "Yawn... everything feels cozy, I’m proud of you.",
+                "Yawn... it's okay to take a break, don't mind me.",
+                "Yawn... resting is productive too, slow and snuggly wins the race.",
+                "Yawn... someone said bunnies can't code, see you in dreamland.",
+                "Yawn... this OS smells like strawberries, boop.",
+                "Yawn... this OS smells like strawberries, don't forget to hydrate!",
+                "Yawn... this OS smells like strawberries, zzZzz.",
+                "Yawn... this place is warm, I like being here with you.",
+                "Yawn... this place is warm, zzZzz.",
+                "Yawn... you should stretch a little, I’m proud of you.",
+                "Yawn... you should stretch a little, 🥕 dreams are the best.",
+                "Yawn... you're doing great, slow and snuggly wins the race.",
+                "Zzz... I dreamed of a carrot castle, don't mind me.",
+                "Zzz... I dreamed of a carrot castle, tell me if snacks arrive.",
+                "Zzz... I'm not lazy, I'm energy-efficient, 💤",
+                "Zzz... being sleepy is a lifestyle, I’m proud of you.",
+                "Zzz... being sleepy is a lifestyle, okay nap time again.",
+                "Zzz... being sleepy is a lifestyle, 🥕 dreams are the best.",
+                "Zzz... clouds look like marshmallows today, I like your vibe.",
+                "Zzz... don't forget to blink, don't forget to hydrate!",
+                "Zzz... don't forget to blink, don't mind me.",
+                "Zzz... everything feels cozy, zzZzz.",
+                "Zzz... it's okay to take a break, don't forget to hydrate!",
+                "Zzz... someone said bunnies can't code, see you in dreamland.",
+                "Zzz... there’s magic in quiet moments, zzZzz.",
+                "Zzz... this OS smells like strawberries, okay nap time again.",
+                "Zzz... this OS smells like strawberries, 🥕 dreams are the best.",
+                "Zzz... this place is warm, I’m proud of you.",
+                "Zzz... this place is warm, see you in dreamland.",
+                "Zzz... this place is warm, slow and snuggly wins the race.",
+                "Zzz... you should stretch a little, slow and snuggly wins the race.",
+                "Zzz... you're doing great, I like being here with you.",
+                "Zzz... you're doing great, carry on, human.",
+
+            ];
+
+            setInterval(() => {
+                if (Math.random() > 0.2) {
+                    const msg = sleepyThoughts[Math.floor(Math.random() * sleepyThoughts.length)];
+                    bubble.innerText = msg;
+                    bubble.style.display = "block";
+                    setTimeout(() => bubble.style.display = "none", 4000);
+                }
+            }, Math.random() * 10000 + 10000); // every 10–20s
+        }
+
+        // 🕒 Wait 1 minute before showing bunny and starting speech
+        setTimeout(() => {
+            document.getElementById("desktopBunny").style.display = "block";
+            startBunnyTalk();
+        }, 60000); // 60,000 ms = 1 minute
+        /* bunny script end */
+        /* heart bow rain script start */
+        let rainInterval = null;
+
+function toggleHeartBowRain(enabled) {
+  if (enabled) {
+    rainInterval = setInterval(() => {
+      for (let i = 0; i < 4; i++) {  // spawn 4 total (2 hearts, 2 bows)
+        createRainItem('images/heart.png');
+        createRainItem('images/bow.png');
+      }
+    }, 600  ); // Adjust speed if needed
+  } else {
+    clearInterval(rainInterval);
+    rainInterval = null;
+  }
+}
+
+
+function createRainItem(imgSrc) {
+  const img = document.createElement('img');
+  img.src = imgSrc;
+  img.className = 'rain-image';
+  img.style.left = Math.random() * 100 + 'vw';
+  const size = Math.floor(Math.random() * 10) + 20 + 'px';
+  img.style.width = size;
+  img.style.height = size;
+  img.style.animationDuration = (Math.random() * 2 + 4) + 's'; // 4–6s
+
+  document.body.appendChild(img);
+
+  // Remove after animation completes
+  setTimeout(() => {
+    img.remove();
+  }, 7000);
+}
+/* heart bow rain script end */
+/* background script start */
+function changeBackground(bgClass) {
+  const desktop = document.querySelector('.desktop');
+  if (!desktop) return;
+
+  // Remove any existing background class
+  desktop.className = 'desktop';
+  // Add the selected background class
+  desktop.classList.add(bgClass);
+}
+
+/* background script end */
+    </script>
+    <!-- plane -->
+
+    <img src="images/plane.png" id="flyingPlane" />
+    <!-- Keep this empty container somewhere in your HTML -->
+    <div id="planeContainer"></div>
+
+    <!-- plane end -->
+
+
+</body>
+
+</html>
