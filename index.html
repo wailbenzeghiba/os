@@ -674,7 +674,204 @@
             z-index: 999;
         }
 
+
         /* cute browser styles end */
+        /* 🌦️ Fluffy Weather App Styling */
+        #weatherApp .title-bar {
+            background: linear-gradient(to right, #ffb6d9, #ffd6f5);
+            color: #fff;
+            font-family: "Comic Sans MS", cursive;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #weatherApp .close-btn {
+            background-color: #fff;
+            color: #ff69b4;
+            padding: 0 8px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        #weatherApp .close-btn:hover {
+            background-color: #ffe6f2;
+        }
+
+        #weatherApp {
+            border: 3px solid #ffc1de;
+            border-radius: 16px;
+            box-shadow: 0 6px 12px rgba(255, 182, 193, 0.3);
+            background-color: #fff0f8;
+        }
+
+        #weatherApp .window-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        #weatherDisplay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            animation: popIn 0.6s ease;
+        }
+
+        #weatherIcon {
+            font-size: 42px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        #weatherMessage {
+            font-size: 15px;
+            font-weight: bold;
+            color: #d63384;
+            max-width: 200px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .weather-quiz {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .weather-quiz button {
+            background-color: #ffb6d9;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 14px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(255, 179, 217, 0.6);
+        }
+
+        .weather-quiz button:hover {
+            background-color: #ff96c2;
+        }
+
+        .trivia-box {
+            margin-top: 15px;
+            background: #fff0f6;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 14px;
+            color: #aa3a68;
+            box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 🌦️ Fluffy Weather App Styling end */
+        /* BubblePop styles */
+        @keyframes floatAndJiggle {
+            0% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 1;
+            }
+
+            25% {
+                transform: translateY(-100px) translateX(-10px) scale(1.05);
+            }
+
+            50% {
+                transform: translateY(-200px) translateX(10px) scale(1.1);
+            }
+
+            75% {
+                transform: translateY(-300px) translateX(-10px) scale(1.15);
+            }
+
+            100% {
+                transform: translateY(-400px) translateX(0px) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .bubble {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background-image: url("images/bubble-heart.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: 50%;
+            pointer-events: auto;
+            cursor: pointer;
+            z-index: 9999;
+            animation: floatAndJiggle 6s ease-in-out forwards;
+        }
+
+        @keyframes floatAndJiggle {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 1;
+            }
+
+            25% {
+                transform: translateY(-100px) translateX(-10px);
+            }
+
+            50% {
+                transform: translateY(-200px) translateX(10px);
+            }
+
+            75% {
+                transform: translateY(-300px) translateX(-10px);
+            }
+
+            100% {
+                transform: translateY(-400px) translateX(0);
+                opacity: 0;
+            }
+        }
+
+        .bubble-img {
+            position: fixed;
+            width: 48px;
+            height: 48px;
+            pointer-events: auto;
+            cursor: pointer;
+            z-index: 9999;
+            animation: floatAndJiggle 6s ease-in-out forwards;
+            user-select: none;
+        }
+
+        /* bubble styles end */
     </style>
 </head>
 
@@ -769,18 +966,31 @@
             Music Player
         </div>
         <!-- music player end -->
+        <!-- 🌸 Cute Weather App Icon -->
+        <div class="icon" style="left: 760px; top: 190px;" onclick="openWindow('weatherApp')">
+            <img src="images/weather.png" alt="Weather" style="width: 50px; height: 50px" />
+            <div>Pop</div>
+        </div>
+        <!-- 🌸 Cute Weather App Icon -->
+        <!-- 🎈 BubblePop App Icon -->
+        <div class="icon" style="left: 780px; top: 290px;" onclick="startBubbleApp()">
+            <img src="images/weatherbubble.png" alt="BubblePop" style="width: 50px; height: 50px" />
+            <div>Pop</div>
+        </div>
+        <!-- 🎈 BubblePop App Icon -->
+
         <!-- hearts game -->
         <div class="icon" style="left: 640px; top: 40px;" onclick="openHeartsGameWindow()">
             <img src="images/heart.png" alt="Catch the Hearts">
             Heart catch
         </div>
         <!-- hearts game end -->
-         <!-- Flying Plane App Icon -->
-<div class="icon" style="left: 600px; top: 200px;" onclick="flyPlane()">
-  <img src="images/pplane.png" alt="Plane Icon" style="width: 50px;" />
-  <div>Fly Plane</div>
-</div>
-         <!-- Flying Plane App Icon -->
+        <!-- Flying Plane App Icon -->
+        <div class="icon" style="left: 600px; top: 200px;" onclick="flyPlane()">
+            <img src="images/pplane.png" alt="Plane Icon" style="width: 50px;" />
+            <div>Fly Plane</div>
+        </div>
+        <!-- Flying Plane App Icon -->
 
         <!-- scribble pad app -->
 
@@ -856,6 +1066,28 @@
 
 
     <!-- hearts game end -->
+
+    <!-- 🌦️ Cute Weather App Window -->
+    <div id="weatherApp" class="window" style="width: 400px; height: 220px; display: none;">
+        <div class="title-bar">
+            Fluffy Forecast
+            <span class="close-btn" onclick="closeWindow('weatherApp')">✖</span>
+        </div>
+        <div class="window-content"
+            style="padding: 20px; font-family: 'Comic Sans MS', cursive; background-color: #fff0f6; color: #d63384;">
+            <div id="weatherDisplay" style="display: flex; align-items: center; gap: 12px;">
+                <div id="weatherIcon" style="font-size: 32px;">☀️</div>
+                <div id="weatherMessage" style="font-size: 16px;">Today is sunny and perfect—just like you 💖</div>
+            </div>
+            <div class="weather-quiz">
+                <button onclick="showWeatherTrivia()">🎀 Daily Weather Trivia!</button>
+                <div id="triviaBox" class="trivia-box" style="display: none;"></div>
+            </div>
+
+        </div>
+    </div>
+    <!-- 🌦️ Cute Weather App Window -->
+
     <!-- scribble pad app -->
 
     <div class="window" id="scribblePadWindow">
@@ -1696,49 +1928,49 @@
         }
         /* scribble pad script end */
         /*plane script start */
-       function flyPlane() {
-    const container = document.getElementById("planeContainer");
-    if (!container) return;
+        function flyPlane() {
+            const container = document.getElementById("planeContainer");
+            if (!container) return;
 
-    // Create unique ID for this plane
-    const planeId = "flyingPlane_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+            // Create unique ID for this plane
+            const planeId = "flyingPlane_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
 
-    // Create new plane element
-    const plane = document.createElement("img");
-    plane.src = "images/plane.png";
-    plane.id = planeId;
-    plane.style.position = "fixed";
-    plane.style.width = "100px";
-    plane.style.pointerEvents = "none";
-    plane.style.zIndex = "9999";
-    plane.style.opacity = "1";
-    plane.style.transition = "transform 4s linear, opacity 0.5s ease";
+            // Create new plane element
+            const plane = document.createElement("img");
+            plane.src = "images/plane.png";
+            plane.id = planeId;
+            plane.style.position = "fixed";
+            plane.style.width = "100px";
+            plane.style.pointerEvents = "none";
+            plane.style.zIndex = "9999";
+            plane.style.opacity = "1";
+            plane.style.transition = "transform 4s linear, opacity 0.5s ease";
 
-    // Set random start position and descent
-    const startTop = Math.floor(Math.random() * (window.innerHeight - 200)) + 50;
-    const descent = Math.floor(Math.random() * 100) + 30;
+            // Set random start position and descent
+            const startTop = Math.floor(Math.random() * (window.innerHeight - 200)) + 50;
+            const descent = Math.floor(Math.random() * 100) + 30;
 
-    plane.style.top = `${startTop}px`;
-    plane.style.left = `${window.innerWidth + 200}px`;
-    plane.style.transform = "translate(0, 0)";
+            plane.style.top = `${startTop}px`;
+            plane.style.left = `${window.innerWidth + 200}px`;
+            plane.style.transform = "translate(0, 0)";
 
-    // Add to DOM
-    container.appendChild(plane);
+            // Add to DOM
+            container.appendChild(plane);
 
-    // Force reflow before animation starts
-    void plane.offsetWidth;
+            // Force reflow before animation starts
+            void plane.offsetWidth;
 
-    // Animate movement
-    plane.style.transform = `translate(-${window.innerWidth + 500}px, ${descent}px)`;
+            // Animate movement
+            plane.style.transform = `translate(-${window.innerWidth + 500}px, ${descent}px)`;
 
-    // After 4s flight, fade out and remove
-    setTimeout(() => {
-        plane.style.opacity = "0";
-        setTimeout(() => {
-            plane.remove();
-        }, 500); // wait for fade out
-    }, 4000);
-}
+            // After 4s flight, fade out and remove
+            setTimeout(() => {
+                plane.style.opacity = "0";
+                setTimeout(() => {
+                    plane.remove();
+                }, 500); // wait for fade out
+            }, 4000);
+        }
 
 
 
@@ -2136,27 +2368,27 @@
             if (icon) makeDraggable(icon);
         };
         let isBrowserFullscreen = false;
-  const browser = document.getElementById('cuteBrowser');
+        const browser = document.getElementById('cuteBrowser');
 
-  function toggleBrowserFullscreen() {
-    if (!isBrowserFullscreen) {
-      browser.style.position = 'fixed';
-      browser.style.top = '0';
-      browser.style.left = '0';
-      browser.style.width = '100vw';
-      browser.style.height = '100vh';
-      browser.style.zIndex = '9999';
-      isBrowserFullscreen = true;
-    } else {
-      browser.style.position = '';
-      browser.style.top = '';
-      browser.style.left = '';
-      browser.style.width = '700px';
-      browser.style.height = '500px';
-      browser.style.zIndex = '';
-      isBrowserFullscreen = false;
-    }
-  }
+        function toggleBrowserFullscreen() {
+            if (!isBrowserFullscreen) {
+                browser.style.position = 'fixed';
+                browser.style.top = '0';
+                browser.style.left = '0';
+                browser.style.width = '100vw';
+                browser.style.height = '100vh';
+                browser.style.zIndex = '9999';
+                isBrowserFullscreen = true;
+            } else {
+                browser.style.position = '';
+                browser.style.top = '';
+                browser.style.left = '';
+                browser.style.width = '700px';
+                browser.style.height = '500px';
+                browser.style.zIndex = '';
+                isBrowserFullscreen = false;
+            }
+        }
         /* cute browser script end */
         /* random sound app start */
         const soundList = [
@@ -2178,6 +2410,174 @@
             audio.play();
         }
         /* random sound app end */
+        /* cute weather app start */
+
+        const cuteWeather = [
+            { icon: "☀️", message: "It’s sunny and you’re even brighter 🌞" },
+            { icon: "🌧️", message: "Rainy days are for warm hugs 💧" },
+            { icon: "🌤️", message: "Fluffy clouds are watching over you 🐑" },
+            { icon: "⛅", message: "Partly cloudy… but your smile makes it sunny 🌈" },
+            { icon: "🌙", message: "A calm night is perfect for dreaming of you 🌙💤" },
+            { icon: "🌸", message: "Blossoms are blooming just to say hi 🌼" },
+            { icon: "☁️", message: "Clouds? Don’t worry, you’re still my sunshine ☁️❤️" }
+        ];
+
+        function updateWeatherApp() {
+            const chosen = cuteWeather[Math.floor(Math.random() * cuteWeather.length)];
+            document.getElementById("weatherIcon").textContent = chosen.icon;
+            document.getElementById("weatherMessage").textContent = chosen.message;
+        }
+
+        document.getElementById("weatherApp").addEventListener("click", updateWeatherApp);
+        const triviaList = [
+            "🌧️ Did you know: It can rain fish in some places due to strong winds?",
+            "☀️ The sun is 400 times larger than the moon… but it looks the same size from Earth!",
+            "❄️ The largest snowflake ever recorded was 15 inches wide!",
+            "🌈 Rainbows can actually form at night — they’re called 'moonbows'!",
+            "☁️ Clouds can weigh over a million pounds, but they still float!",
+            "🌪️ A tornado once carried a mailbox 50 miles away. Magic mail!",
+            "💨 Wind doesn’t make noise — it’s the stuff it hits that sings.",
+            "🔥 Lightning is hotter than the surface of the sun!",
+            "🌊 Some frogs can predict rain — they're basically weather wizards!",
+            "🍃 The smell after rain is called *petrichor* — nature’s perfume.",
+            "🌧️ Raindrops aren’t actually tear-shaped — they’re more like hamburger buns when falling.",
+            "☀️ The sun looks yellow, but it actually emits all the colors — it’s white in space!",
+            "🌈 Rainbows always form opposite the sun — they’re nature’s sneaky surprise.",
+            "☁️ The average cumulus cloud weighs about 1 million pounds!",
+            "🌪️ Tornadoes can spin at speeds up to 300 mph — a sky ballerina!",
+            "❄️ No two snowflakes are exactly alike — every one is a little snowflake snowsona.",
+            "💧 Fog is just a low cloud — clouds that got tired and wanted a nap on the ground.",
+            "🌊 The ocean influences weather patterns — it's like the planet’s thermostat!",
+            "🌨️ Thundersnow is a real thing — it’s snow, with thunder and lightning!",
+            "🌙 A 'moonbow' is a rainbow that happens at night — super rare and super dreamy.",
+            "🌬️ Wind is air moving from high pressure to low — like nature’s gentle push.",
+            "🔥 Lightning is five times hotter than the surface of the sun!",
+            "🐸 Frogs have been known to croak louder when rain is coming — they’re weather DJs.",
+            "🌤️ The smell after rain is called petrichor — the Earth’s perfume.",
+            "🌍 The Earth's tilt gives us seasons — thank you, tilted planet!",
+            "🌀 Hurricanes in the Northern Hemisphere spin counter-clockwise, but clockwise in the Southern!",
+            "☃️ Snow is actually clear — it just looks white because of how light bounces!",
+            "🧊 Ice crystals can form clouds even when it’s sunny and blue-skied.",
+            "🎐 The sound of wind chimes is caused by breezes moving in irregular patterns.",
+            "🌿 Some plants release a special scent when rain is coming!",
+            "🌟 Shooting stars aren't weather, but meteor showers do change with seasons!",
+            "🐝 Bees stay close to their hives when a storm is coming — tiny meteorologists!",
+            "🦋 Butterflies hide under leaves during rainstorms to protect their wings.",
+            "📦 Air pressure changes can affect your mood — ever felt sleepy before rain?",
+            "💨 The Beaufort Wind Scale was created by a sailor to measure wind before apps existed!",
+            "⛅ A 'sundog' is a bright spot next to the sun, often seen in cold weather!",
+            "🌪️ Tornadoes can pick up entire ponds of frogs and drop them miles away!",
+            "🌫️ Mist is thinner than fog — it’s basically fog’s baby cousin.",
+            "🌡️ The hottest temperature ever recorded on Earth was 56.7°C (134°F) in Death Valley!",
+            "🥶 The coldest temperature ever? –128.6°F in Antarctica!",
+            "🧁 You can bake cookies on a car dashboard in Arizona summers!",
+            "🕊️ Wind can carry seeds across continents — flower world tours!",
+            "🎈 The higher you go, the colder it gets — about 6.5°C per km up!",
+            "🌦️ Some countries have just two seasons — dry and rainy!",
+            "🌪️ Tornadoes can last seconds… or over an hour!",
+            "⛈️ Thunder happens because lightning heats the air so fast it explodes outward!",
+            "🌛 Full moons appear larger in summer due to the moon’s position.",
+            "🌼 A rainbow can only be seen when the sun is behind you!",
+            "🐾 Animals can often sense weather changes before humans can.",
+            "⛅ Clouds move faster the higher they are — like speedy sky surfers.",
+            "🏔️ Mountains can create their own little climates!",
+            "🐌 Some snails hibernate in dry weather and only come out when it rains.",
+            "🥤 You can hear the difference in how soda fizzes before a storm — try it!",
+            "🍂 Autumn leaves are brighter after dry weather!",
+            "🎨 The sky isn’t blue — it’s just how our eyes see scattered light.",
+            "🎵 Thunder can travel 10 miles or more — distant rumbles of the sky’s song.",
+            "🐾 Cats often clean themselves more before a rainstorm!",
+            "🕷️ Spiders tend to build lower webs before rain.",
+            "🧠 Some people get more creative on cloudy days — the coziness effect!",
+            "🎃 The northern lights (aurora borealis) can sometimes be seen during solar storms.",
+            "🥺 Warm rain can fall in cold air — nature’s confusion drizzle.",
+            "🌸 Cherry blossoms in Japan bloom according to precise weather patterns!",
+            "🌴 Some palm trees bend in storms without breaking — flexible and fabulous!",
+            "🕊️ A feather dropped from high enough will drift with the wind and land miles away.",
+            "🧤 You lose most heat through your head in winter — wear a hat, not just a heart!",
+            "🧸 Kids used to predict rain by the smell of worms rising from soil.",
+            "🚀 The atmosphere ends at 10,000 km — but weather only happens in the first 12!",
+            "🌕 Cold weather can make the moon look extra bright — like a silver lantern.",
+            "🌷 Spring storms help flowers bloom by shaking up the soil!",
+            "🧃 Clouds sometimes have different names in different countries!",
+            "🌪️ Mini tornadoes called 'dust devils' happen on sunny days!",
+            "🌌 The Milky Way is easier to see after rain clears the dust from the air.",
+            "🫧 Bubbles float longer in humid air — try it on a rainy day!",
+            "🍓 Strawberries grow sweeter in sunny, not stormy, weather.",
+            "🫧 Soap bubbles can predict rain — if they pop quickly, rain is near!",
+            "☁️ A single thunderstorm can hold more than 1 billion gallons of water.",
+            "🌂 Umbrellas were invented 4,000 years ago — some were for sun, not rain!",
+            "🧊 Sometimes, rain falls as ice pellets when the air is cold but the ground is warm.",
+            "🌡️ Your shadow is shortest at noon — fun for weather tracking!",
+            "🍵 Warm tea on a rainy day actually helps regulate body temperature better.",
+            "💡 Lightning can strike the same place more than once!",
+            "📸 You can tell how far a storm is by counting seconds after a lightning flash.",
+            "🫖 In old times, people used teapots and jars to measure rainfall.",
+            "🧙 Some ancient people thought thunder was the sound of gods bowling!",
+            "🧁 Rain droplets can act like mini prisms — they break light into rainbows.",
+            "🐚 Shells on the beach move with tides and wind — ocean weather in action.",
+            "🌺 Bees won't leave the hive in heavy winds — safety first!",
+            "🍄 Mushrooms love humid, rainy weather — that’s their party season!",
+            "🧼 Rain can actually clean pollution from the air!",
+            "🌌 Clear skies at night mean it may be chilly in the morning.",
+            "🌇 Cities have their own warmer microclimates — it’s called the Urban Heat Island effect.",
+            "⛱️ A day at the beach is best when wind is offshore — it keeps waves gentle!",
+            "🌧️ Rain falls faster than you walk — unless it’s a sprinkle!",
+            "🦢 Swans sometimes tuck their heads under wings in cold rain.",
+            "🧤 Snow squeaks under your feet when it’s really cold!",
+            "🫖 You can smell more during rain because water helps carry scent molecules.",
+            "🌕 Supermoons appear during specific weather and orbit moments — bigger and closer!",
+            "🧊 Even deserts can get snow — it snowed in the Sahara in 2018!",
+            "🐟 Some cultures believe fish jump higher before storms!",
+            "☁️ The average cloud lives only about 10 minutes!",
+            "🍂 The color of autumn leaves is influenced by weather before fall!",
+            "🦉 Owls fluff their feathers when it’s windy to keep warm.",
+            "🦩 Flamingos stand on one leg in storms to conserve body heat!",
+            "🧵 In folklore, red skies at night meant good weather ahead — 'sailor’s delight'!",
+            "🫧 Light drizzle can feel colder than heavier rain because of wind chill!",
+            "🌦️ Double rainbows form when sunlight reflects twice inside raindrops.",
+            "🎭 Fog in old plays was often made with dry ice — theatric weather!",
+            "🐥 Chicks in eggs can sense approaching thunderstorms — tiny survivors!",
+            "🍥 A pink sunset means clear weather ahead — nature’s promise!"
+        ];
+
+        function showWeatherTrivia() {
+            const box = document.getElementById("triviaBox");
+            const randomTrivia = triviaList[Math.floor(Math.random() * triviaList.length)];
+            box.textContent = randomTrivia;
+            box.style.display = "block";
+        }
+
+        /* cute weather app end */
+        /* bubble script start */
+        function spawnBubble() {
+            const container = document.getElementById("bubbleContainer");
+            const bubble = document.createElement("img");
+            bubble.src = "images/weatherbubble.png"; // Use your own image
+            bubble.className = "bubble-img";
+
+            // Random horizontal position
+            bubble.style.left = `${Math.random() * (window.innerWidth - 60)}px`;
+            bubble.style.bottom = `0px`;
+
+            // On click: play pop sound & remove
+            bubble.onclick = () => {
+                document.getElementById("popSound")?.play();
+                bubble.remove();
+            };
+
+            container.appendChild(bubble);
+
+            // Auto remove after 6 seconds
+            setTimeout(() => {
+                bubble.remove();
+            }, 6000);
+        }
+
+        function startBubbleApp() {
+            spawnBubble(); // Spawn only one bubble per click
+        }
+        /* bubble script end */
     </script>
     <!-- plane -->
 
@@ -2186,6 +2586,12 @@
     <div id="planeContainer"></div>
 
     <!-- plane end -->
+    <!-- Bubble container (can be placed anywhere in body) -->
+    <div id="bubbleContainer"></div>
+    <audio id="popSound" src="sounds/pop.mp3" preload="auto"></audio>
+
+    <!-- Bubble container end (can be placed anywhere in body) -->
+
 
 
 </body>
