@@ -573,23 +573,24 @@
         /* bow trail end */
         /* bunny css */
         #desktopBunny {
-            position: fixed;
-            bottom: 10px;
+            position: fixed !important;
+            bottom: 15px;
             right: 30px;
             width: 100px;
-            z-index: 9999;
-            user-select: none;
+            z-index: 99999;
             pointer-events: none;
+            user-select: none;
             opacity: 0.9;
+            transition: bottom 0.3s ease;
         }
 
         #bunnyBubble {
             position: fixed;
-            bottom: 120px;
+            bottom: 115px;
             right: 40px;
             background-color: #fff;
             color: #444;
-            padding: 8px 14px;
+            padding: 8px 10px;
             border-radius: 20px;
             font-family: "Comic Sans MS", cursive;
             font-size: 14px;
@@ -604,61 +605,76 @@
         /*hearts game styles end */
         /* heart and bow rain styles */
         @keyframes swayFall {
-  0% {
-    transform: rotate(0deg) translateX(0);
-  }
-  25% {
-    transform: rotate(15deg) translateX(-10px);
-  }
-  50% {
-    transform: rotate(0deg) translateX(10px);
-  }
-  75% {
-    transform: rotate(-15deg) translateX(-10px);
-  }
-  100% {
-    transform: rotate(0deg) translateX(0);
-    top: 110vh;
-  }
-}
+            0% {
+                transform: rotate(0deg) translateX(0);
+            }
 
-.rain-image {
-  position: fixed;
-  top: -50px;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.9;
-  animation: swayFall 5s linear forwards;
-}
+            25% {
+                transform: rotate(15deg) translateX(-10px);
+            }
 
-/*heart and bow rain styles end */
-/* backgrounds */ 
-.desktop.bg-hearts {
-  background: radial-gradient(circle at 20% 30%, #ffe6f0, #ffcce0);
-}
+            50% {
+                transform: rotate(0deg) translateX(10px);
+            }
 
-.desktop.bg-bows {
-  background: repeating-linear-gradient(
-    45deg,
-    #fce4ec,
-    #fce4ec 10px,
-    #f8bbd0 10px,
-    #f8bbd0 20px
-  );
-}
+            75% {
+                transform: rotate(-15deg) translateX(-10px);
+            }
 
-.desktop.bg-cottoncandy {
-  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-}
+            100% {
+                transform: rotate(0deg) translateX(0);
+                top: 110vh;
+            }
+        }
 
-.desktop.bg-stars {
-  background: radial-gradient(circle at top left, #fff0f5, #ffe4e1);
-  background-image: repeating-radial-gradient(circle, #fff 1px, transparent 10px);
-  background-size: 100px 100px;
-}
+        .rain-image {
+            position: fixed;
+            top: -50px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.9;
+            animation: swayFall 5s linear forwards;
+        }
+
+        /*heart and bow rain styles end */
+        /* backgrounds */
+        .desktop.bg-hearts {
+            background: radial-gradient(circle at 20% 30%, #ffe6f0, #ffcce0);
+        }
+
+        .desktop.bg-bows {
+            background: repeating-linear-gradient(45deg,
+                    #fce4ec,
+                    #fce4ec 10px,
+                    #f8bbd0 10px,
+                    #f8bbd0 20px);
+        }
+
+        .desktop.bg-cottoncandy {
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+        }
+
+        .desktop.bg-stars {
+            background: radial-gradient(circle at top left, #fff0f5, #ffe4e1);
+            background-image: repeating-radial-gradient(circle, #fff 1px, transparent 10px);
+            background-size: 100px 100px;
+        }
 
 
-/* backgrounds end */ 
+        /* backgrounds end */
+        /* cute browser styles */
+        #browserIcon {
+            position: absolute;
+            top: 100px;
+            /* distance from top of page */
+            left: 100px;
+            /* distance from left of page */
+            width: 64px;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        /* cute browser styles end */
     </style>
 </head>
 
@@ -697,6 +713,7 @@
             Girl
         </div>
         <!-- spawn Anime end -->
+
         <!-- gafa 3d -->
 
         <div class="icon" style="top: 300px; left: 100px;" onclick="openGafaGame()">
@@ -711,6 +728,12 @@
             Love Letter
         </div>
         <!-- love letter app end -->
+        <!-- 🌸 Cute Browser App Icon -->
+        <div class="icon" style="left: 400px; top: 220px;" onclick="openWindow('cuteBrowser')">
+
+            <img src="images/browser.png" alt="Browser Icon" style="width: 60px; height: 60px;" />
+            <div>Filiz Web</div>
+        </div>
         <!-- folder namer -->
         <div id="folder-namer" class="window" style="display:none; top: 150px; left: 150px;">
             <div class="title-bar">
@@ -725,6 +748,13 @@
             </div>
         </div>
         <!-- folder namer end -->
+        <!-- 🎶 Random Sound App Icon -->
+        <div class="icon" style="left: 300px; top: 160px;" onclick="playRandomSound()">
+            <img src="images/miffy.png" alt="Sound Toy" style="width: 60px; height: 60px;" />
+            <div> Miffy Stress Ball</div>
+        </div>
+        <!-- 🎶 Random Sound App Icon end -->
+
         <!-- notes -->
 
         <div class="icon" style="left: 40px; top: 40px;" onclick="openWindow('notes')">
@@ -841,6 +871,7 @@
     <!-- scribble pad app end -->
 
 
+
     <!-- music player -->
 
     <div id="musicPlayer" class="window" style="display: none; left: 100px; top: 100px; width: 320px;">
@@ -896,32 +927,65 @@
     </div>
 
     <!-- music player end -->
+    <!-- Cute Browser Window -->
+    <!-- Cute Browser Window -->
+    <div id="cuteBrowser" class="window" style="width: 700px; height: 500px;">
+        <div class="title-bar">
+            Miffy Browser
+            <span onclick="toggleBrowserFullscreen()" title="Fullscreen"
+                style="margin-right: 10px; cursor: pointer;">🖥️</span>
+            <span class="close-btn" onclick="closeWindow('cuteBrowser')">✖</span>
+        </div>
+        <div class="window-content" style="display: flex; flex-direction: column; height: 100%;">
+            <div style="margin-bottom: 10px; display: flex; gap: 8px;">
+                <button onclick="goHome()"
+                    style="padding: 5px 10px; background-color: #ffb6d9; border: none; border-radius: 10px; font-weight: bold; color: white; font-family: 'Comic Sans MS', cursive;">
+                    🏠 Home
+                </button>
+                <input id="browserInput" type="text" placeholder="https://example.com"
+                    style="flex: 1; padding: 5px; font-size: 14px; border-radius: 10px; border: 1px solid #ccc;" />
+                <button onclick="loadPage()"
+                    style="padding: 5px 10px; background-color: pink; border: none; border-radius: 10px; font-weight: bold;">
+                    ✨ Go
+                </button>
+            </div>
+            <iframe id="browserFrame" src="filiz-homepage.html"
+                style="flex: 1; width: 100%; border: 2px solid #f3b7d7; border-radius: 12px;">
+            </iframe>
+        </div>
+    </div>
+    <!-- Cute Browser Window end -->
+
     <!-- Settings -->
-<div id="settings" class="window" style="display: none; width: 300px;">
-  <div class="title-bar">
-    <span>✨ Settings</span>
-    <span class="close-btn" onclick="closeWindow('settings')">✖</span>
-  </div>
+    <div id="settings" class="window" style="display: none; width: 300px;">
+        <div class="title-bar">
+            <span>✨ Settings</span>
+            <span class="close-btn" onclick="closeWindow('settings')">✖</span>
+        </div>
 
-  <div class="window-content" style="padding: 15px; font-family: 'Comic Sans MS', cursive; background: #fff0f6; color: #333;">
-    <h3 style="margin-top: 0;">🌈 Effects</h3>
-    <div class="settings-section" style="margin-bottom: 20px;">
-      <label style="display: flex; align-items: center; gap: 10px;">
-        <input type="checkbox" onchange="toggleHeartBowRain(this.checked)">
-        Heart & Bow Rain
-      </label>
-    </div>
+        <div class="window-content"
+            style="padding: 15px; font-family: 'Comic Sans MS', cursive; background: #fff0f6; color: #333;">
+            <h3 style="margin-top: 0;">🌈 Effects</h3>
+            <div class="settings-section" style="margin-bottom: 20px;">
+                <label style="display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" onchange="toggleHeartBowRain(this.checked)">
+                    Heart & Bow Rain
+                </label>
+            </div>
 
-    <h3>🎨 Change Background</h3>
-    <div class="settings-section" style="display: flex; flex-direction: column; gap: 10px;">
-      <button onclick="changeBackground('bg-hearts')" style="padding: 6px; border-radius: 8px;">💖 Hearts</button>
-      <button onclick="changeBackground('bg-bows')" style="padding: 6px; border-radius: 8px;">🎀 Bows</button>
-      <button onclick="changeBackground('bg-cottoncandy')" style="padding: 6px; border-radius: 8px;">🍭 Cotton Candy</button>
-      <button onclick="changeBackground('bg-stars')" style="padding: 6px; border-radius: 8px;">🌟 Stars</button>
+            <h3>🎨 Change Background</h3>
+            <div class="settings-section" style="display: flex; flex-direction: column; gap: 10px;">
+                <button onclick="changeBackground('bg-hearts')" style="padding: 6px; border-radius: 8px;">💖
+                    Hearts</button>
+                <button onclick="changeBackground('bg-bows')" style="padding: 6px; border-radius: 8px;">🎀 Bows</button>
+                <button onclick="changeBackground('bg-cottoncandy')" style="padding: 6px; border-radius: 8px;">🍭 Cotton
+                    Candy</button>
+                <button onclick="changeBackground('bg-stars')" style="padding: 6px; border-radius: 8px;">🌟
+                    Stars</button>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-<!-- music player end -->
+    <!-- music player end -->
     <!-- BUNNY -->
 
     <img src="images/output-onlinegiftools (1).gif" id="desktopBunny" style="display: none;" alt="Sleepy Bunny">
@@ -1987,51 +2051,134 @@
         /* heart bow rain script start */
         let rainInterval = null;
 
-function toggleHeartBowRain(enabled) {
-  if (enabled) {
-    rainInterval = setInterval(() => {
-      for (let i = 0; i < 4; i++) {  // spawn 4 total (2 hearts, 2 bows)
-        createRainItem('images/heart.png');
-        createRainItem('images/bow.png');
-      }
-    }, 600  ); // Adjust speed if needed
-  } else {
-    clearInterval(rainInterval);
-    rainInterval = null;
+        function toggleHeartBowRain(enabled) {
+            if (enabled) {
+                rainInterval = setInterval(() => {
+                    for (let i = 0; i < 4; i++) {  // spawn 4 total (2 hearts, 2 bows)
+                        createRainItem('images/heart.png');
+                        createRainItem('images/bow.png');
+                    }
+                }, 600); // Adjust speed if needed
+            } else {
+                clearInterval(rainInterval);
+                rainInterval = null;
+            }
+        }
+
+
+        function createRainItem(imgSrc) {
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.className = 'rain-image';
+            img.style.left = Math.random() * 100 + 'vw';
+            const size = Math.floor(Math.random() * 10) + 20 + 'px';
+            img.style.width = size;
+            img.style.height = size;
+            img.style.animationDuration = (Math.random() * 2 + 4) + 's'; // 4–6s
+
+            document.body.appendChild(img);
+
+            // Remove after animation completes
+            setTimeout(() => {
+                img.remove();
+            }, 7000);
+        }
+        /* heart bow rain script end */
+        /* background script start */
+        function changeBackground(bgClass) {
+            const desktop = document.querySelector('.desktop');
+            if (!desktop) return;
+
+            // Remove any existing background class
+            desktop.className = 'desktop';
+            // Add the selected background class
+            desktop.classList.add(bgClass);
+        }
+
+        /* background script end */
+        /* cute browser script start */
+        function loadPage() {
+            const input = document.getElementById('browserInput').value;
+            const browserFrame = document.getElementById('browserFrame');
+            if (input) {
+                browserFrame.src = input;
+            }
+        }
+
+        function goHome() {
+            const browserFrame = document.getElementById('browserFrame');
+            browserFrame.src = "filiz-homepage.html";
+        }
+        function makeDraggable(el) {
+            let offsetX, offsetY, isDragging = false;
+
+            el.addEventListener("mousedown", (e) => {
+                isDragging = true;
+                offsetX = e.clientX - el.offsetLeft;
+                offsetY = e.clientY - el.offsetTop;
+                el.style.zIndex = 1001;
+            });
+
+            document.addEventListener("mousemove", (e) => {
+                if (isDragging) {
+                    el.style.left = (e.clientX - offsetX) + "px";
+                    el.style.top = (e.clientY - offsetY) + "px";
+                }
+            });
+
+            document.addEventListener("mouseup", () => {
+                isDragging = false;
+            });
+        }
+
+        // call it after page loads
+        window.onload = () => {
+            const icon = document.getElementById("browserIcon");
+            if (icon) makeDraggable(icon);
+        };
+        let isBrowserFullscreen = false;
+  const browser = document.getElementById('cuteBrowser');
+
+  function toggleBrowserFullscreen() {
+    if (!isBrowserFullscreen) {
+      browser.style.position = 'fixed';
+      browser.style.top = '0';
+      browser.style.left = '0';
+      browser.style.width = '100vw';
+      browser.style.height = '100vh';
+      browser.style.zIndex = '9999';
+      isBrowserFullscreen = true;
+    } else {
+      browser.style.position = '';
+      browser.style.top = '';
+      browser.style.left = '';
+      browser.style.width = '700px';
+      browser.style.height = '500px';
+      browser.style.zIndex = '';
+      isBrowserFullscreen = false;
+    }
   }
-}
+        /* cute browser script end */
+        /* random sound app start */
+        const soundList = [
+            'sounds/first alien.mp3',
+            'sounds/2nd alien.mp3',
+            'sounds/3rd alien.mp3',
+            'sounds/cat MEAW.mp3',
+            'sounds/cute-cat-352656.mp3',
+            'sounds/cartoon-jump-6462.mp3',
+            'sounds/dove.mp3',
+            'sounds/dove2.mp3',
+            'sounds/idek.mp3',
+            'sounds/wieord.mp3',
+        ];
 
-
-function createRainItem(imgSrc) {
-  const img = document.createElement('img');
-  img.src = imgSrc;
-  img.className = 'rain-image';
-  img.style.left = Math.random() * 100 + 'vw';
-  const size = Math.floor(Math.random() * 10) + 20 + 'px';
-  img.style.width = size;
-  img.style.height = size;
-  img.style.animationDuration = (Math.random() * 2 + 4) + 's'; // 4–6s
-
-  document.body.appendChild(img);
-
-  // Remove after animation completes
-  setTimeout(() => {
-    img.remove();
-  }, 7000);
-}
-/* heart bow rain script end */
-/* background script start */
-function changeBackground(bgClass) {
-  const desktop = document.querySelector('.desktop');
-  if (!desktop) return;
-
-  // Remove any existing background class
-  desktop.className = 'desktop';
-  // Add the selected background class
-  desktop.classList.add(bgClass);
-}
-
-/* background script end */
+        function playRandomSound() {
+            const randomIndex = Math.floor(Math.random() * soundList.length);
+            const audio = new Audio(soundList[randomIndex]);
+            audio.play();
+        }
+        /* random sound app end */
     </script>
     <!-- plane -->
 
