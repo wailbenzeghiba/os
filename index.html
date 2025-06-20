@@ -123,6 +123,7 @@
             left: 100px;
             display: none;
             box-shadow: 4px 4px #ff69b4;
+            z-index: 99999;
         }
 
         .title-bar {
@@ -574,7 +575,7 @@
         /* bunny css */
         #desktopBunny {
             position: fixed !important;
-            bottom: 15px;
+            bottom: 10px;
             right: 30px;
             width: 100px;
             z-index: 99999;
@@ -872,6 +873,29 @@
         }
 
         /* bubble styles end */
+        /* trash can css */
+        .desktop-icon {
+            display: inline-block;
+            width: 80px;
+            text-align: center;
+            margin: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .desktop-icon img {
+            width: 60px;
+            height: 60px;
+            pointer-events: none;
+        }
+
+        .trash-icon {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        /* trash can css end */
     </style>
 </head>
 
@@ -971,13 +995,25 @@
             <img src="images/weatherkitty.png" alt="Weather" style="width: 60px; height: 60px" />
             <div>weather</div>
         </div>
-        <!-- 🌸 Cute Weather App Icon -->
+        <!-- 🌸 Cute Weather App Icon end -->
+        <!-- Trash can icon and sfx -->
+
+        <div class="icon trash-icon" style="left: 980px; top: 400px;" id="trash-can">
+            <img src="images/trash.png" alt="Trash Can" />
+            <span>Trash</span>
+        </div>
+        <audio id="trash-sound" src="sounds/destroyedd.mp3" preload="auto"></audio>
+        <audio id="boing-sound" src="sounds/sword-schwing-40520.mp3" preload="auto"></audio>
+
+        <!-- Trash can icon and sfx end -->
+
+        <audio id="trash-sound" src="sounds/trash.mp3" preload="auto"></audio>
         <!-- 🎈 BubblePop App Icon -->
         <div class="icon" style="left: 780px; top: 290px;" onclick="startBubbleApp()">
             <img src="images/weatherbubble.png" alt="BubblePop" style="width: 50px; height: 50px" />
             <div>Pop</div>
         </div>
-        <!-- 🎈 BubblePop App Icon -->
+        <!-- 🎈 BubblePop App Icon end -->
 
         <!-- hearts game -->
         <div class="icon" style="left: 640px; top: 40px;" onclick="openHeartsGameWindow()">
@@ -1019,6 +1055,7 @@
     </div>
 
     <!-- gafa 3d end -->
+
 
     </div>
     <!-- hearts game -->
@@ -1518,33 +1555,7 @@
             el.style.zIndex = max + 1;
         }
 
-        function makeDraggable(el) {
-            let isDragging = false;
-            let offsetX = 0, offsetY = 0;
 
-            function onMouseMove(e) {
-                if (!isDragging) return;
-                el.style.left = `${e.clientX - offsetX}px`;
-                el.style.top = `${e.clientY - offsetY}px`;
-            }
-
-            function onMouseUp() {
-                isDragging = false;
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
-                document.body.style.userSelect = '';
-            }
-
-            el.addEventListener('mousedown', function (e) {
-                if (e.target.closest('.close-btn')) return;
-                isDragging = true;
-                offsetX = e.clientX - el.offsetLeft;
-                offsetY = e.clientY - el.offsetTop;
-                document.body.style.userSelect = 'none';
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
-            });
-        }
 
         document.querySelectorAll('.window').forEach(win => makeDraggable(win));
         document.querySelectorAll('.icon').forEach(icon => makeDraggable(icon));
@@ -2341,26 +2352,79 @@
             browserFrame.src = "filiz-homepage.html";
         }
         function makeDraggable(el) {
-            let offsetX, offsetY, isDragging = false;
+    let offsetX, offsetY, isDragging = false;
 
-            el.addEventListener("mousedown", (e) => {
-                isDragging = true;
-                offsetX = e.clientX - el.offsetLeft;
-                offsetY = e.clientY - el.offsetTop;
-                el.style.zIndex = 1001;
-            });
+    const desktop = document.getElementById("desktop");
 
-            document.addEventListener("mousemove", (e) => {
-                if (isDragging) {
-                    el.style.left = (e.clientX - offsetX) + "px";
-                    el.style.top = (e.clientY - offsetY) + "px";
-                }
-            });
+    el.addEventListener("mousedown", (e) => {
+        const elRect = el.getBoundingClientRect();
+        const desktopRect = desktop.getBoundingClientRect();
 
-            document.addEventListener("mouseup", () => {
-                isDragging = false;
-            });
+        offsetX = e.clientX - elRect.left;
+        offsetY = e.clientY - elRect.top;
+
+        isDragging = true;
+        el.style.zIndex = 1001;
+
+        // Prevent text selection during drag
+        e.preventDefault();
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        if (isDragging) {
+            const desktopRect = desktop.getBoundingClientRect();
+
+            const newLeft = e.clientX - desktopRect.left - offsetX;
+            const newTop = e.clientY - desktopRect.top - offsetY;
+
+            el.style.left = `${newLeft}px`;
+            el.style.top = `${newTop}px`;
         }
+    });
+
+    document.addEventListener("mouseup", () => {
+        if (!isDragging) return;
+        isDragging = false;
+
+        const trash = document.getElementById("trash-can");
+        if (!trash) return;
+
+        const trashRect = trash.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+
+        const isOverlapping =
+            elRect.right > trashRect.left &&
+            elRect.left < trashRect.right &&
+            elRect.bottom > trashRect.top &&
+            elRect.top < trashRect.bottom;
+
+        if (isOverlapping) {
+            if (el.classList.contains("anime-girl")) {
+                const trashSound = document.getElementById("trash-sound");
+                if (trashSound) trashSound.play();
+
+                el.style.transition = "transform 0.4s ease, opacity 0.4s ease";
+                el.style.transform = "scale(0)";
+                el.style.opacity = "0";
+
+                setTimeout(() => el.remove(), 400);
+            } else if (el.classList.contains("icon")) {
+                const boingSound = document.getElementById("boing-sound");
+                if (boingSound) boingSound.play();
+
+                const maxX = desktop.offsetWidth - el.offsetWidth;
+                const maxY = desktop.offsetHeight - el.offsetHeight;
+
+                const newX = Math.floor(Math.random() * maxX);
+                const newY = Math.floor(Math.random() * maxY);
+
+                el.style.left = `${newX}px`;
+                el.style.top = `${newY}px`;
+            }
+        }
+    });
+}
+
 
         // call it after page loads
         window.onload = () => {
@@ -2578,6 +2642,26 @@
             spawnBubble(); // Spawn only one bubble per click
         }
         /* bubble script end */
+        /* trash can script start */
+        const trash = document.getElementById('trash-can');
+        const trashRect = trash.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+
+        const isOverlapping =
+            elRect.right > trashRect.left &&
+            elRect.left < trashRect.right &&
+            elRect.bottom > trashRect.top &&
+            elRect.top < trashRect.bottom;
+
+        if (isOverlapping) {
+            document.getElementById('trash-sound').play();
+            el.style.transition = "transform 0.4s ease";
+            el.style.transform = "scale(0)";
+            setTimeout(() => {
+                el.remove();
+            }, 400);
+        }
+        /* trash can script end */
     </script>
     <!-- plane -->
 
