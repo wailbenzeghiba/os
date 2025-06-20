@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    #ghost {
+      position: absolute;
+      width: 80px;
+      height: auto;
+      left: 100px;
+      top: 100px;
+      cursor: pointer;
+      transition: transform 0.3s;
+      pointer-events: auto;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <img id="ghost" src="images/ghost.gif" />
+  <audio id="ghost-sound" src="sounds/ghost.wav " preload="auto"></audio>
+
+  <script>
+    const ghost = document.getElementById('ghost');
+    const sound = document.getElementById('ghost-sound');
+
+    let x = 100;
+    let y = 100;
+    let targetX = 400;
+    let targetY = 300;
+
+    function chooseNewTarget() {
+      const padding = 50;
+      const maxX = window.innerWidth - ghost.offsetWidth - padding;
+      const maxY = window.innerHeight - ghost.offsetHeight - padding;
+      targetX = Math.floor(Math.random() * maxX + padding / 2);
+      targetY = Math.floor(Math.random() * maxY + padding / 2);
+    }
+
+    function moveGhost() {
+      const dx = targetX - x;
+      const dy = targetY - y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 5) {
+        // Reached target, pause a bit then pick a new one
+        setTimeout(chooseNewTarget, Math.random() * 2000 + 1000);
+        return;
+      }
+
+      const speed = 1.2;
+      x += (dx / dist) * speed;
+      y += (dy / dist) * speed;
+
+      ghost.style.left = `${x}px`;
+      ghost.style.top = `${y}px`;
+
+      // Flip based on movement direction
+      if (dx < 0) {
+        ghost.style.transform = 'scaleX(-1)';
+      } else {
+        ghost.style.transform = 'scaleX(1)';
+      }
+    }
+
+    setInterval(moveGhost, 30);
+    chooseNewTarget(); // start with one
+
+    ghost.addEventListener('click', () => {
+      sound.currentTime = 0;
+      sound.play();
+    });
+  </script>
+</body>
+</html>

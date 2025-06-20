@@ -414,6 +414,39 @@
         #volumeControl {
             margin-top: 10px;
         }
+        .volume-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #fff0f8;
+  border: 2px solid #ffb6d9;
+  border-radius: 12px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 16px;
+  color: #333;
+  user-select: none;
+}
+
+.volume-container button {
+  background: #ffb6d9;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.3s;
+}
+
+.volume-container button:hover {
+  background: #ff8ac9;
+}
+
+#volumeDisplay {
+  min-width: 40px;
+  text-align: center;
+}
 
 
         /* music player styles end */
@@ -955,6 +988,14 @@
             <img src="images/browser.png" alt="Browser Icon" style="width: 60px; height: 60px;" />
             <div>Filiz Web</div>
         </div>
+        <!-- 🌸 Cute Browser App Icon end -->
+        <!-- 🌸 Cute Browser App Icon -->
+        <div class="icon" style="left: 470px; top: 350px;" onclick="summonGhost()">
+
+            <img src="images/ghost.gif" alt="Browser Icon" style="width: 60px; height: 60px;" />
+            <div>BOO</div>
+        </div>
+        <!-- 🌸 Cute Browser App Icon end -->
         <!-- folder namer -->
         <div id="folder-namer" class="window" style="display:none; top: 150px; left: 150px;">
             <div class="title-bar">
@@ -998,7 +1039,7 @@
         <!-- 🌸 Cute Weather App Icon end -->
         <!-- Trash can icon and sfx -->
 
-        <div class="icon trash-icon" style="left: 980px; top: 400px;" id="trash-can">
+        <div id="trash-can" class=icon trash-icon" style="left: 980px; top: 400px;" id="trash-can">
             <img src="images/trash.png" alt="Trash Can" />
             <span>Trash</span>
         </div>
@@ -1014,6 +1055,7 @@
             <div>Pop</div>
         </div>
         <!-- 🎈 BubblePop App Icon end -->
+
 
         <!-- hearts game -->
         <div class="icon" style="left: 640px; top: 40px;" onclick="openHeartsGameWindow()">
@@ -1043,6 +1085,12 @@
             Gallery
         </div>
         <!-- gallery end -->
+        <!-- ghost busters icon start -->
+        <div class="icon" style="left: 200px; top: 320px;" id="ghost-busters-icon" onclick="bustAllGhosts()">
+            <img src="images/busters.png" alt="Ghost Busters" />
+            <span>Busters</span>
+        </div>
+        <!-- ghost busters icon end -->
     </div>
     <!-- gafa 3d  -->
     <div id="gafaWindow" class="window" style="width: 800px; height: 600px; display: none;">
@@ -1193,10 +1241,10 @@
             </div>
 
 
-            <!-- Volume -->
-            <div id="volumeControl">
-                Volume: <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
-            </div>
+            <div id="volumeControls">
+  <input type="range" id="volumeSlider" min="0" max="100" value="100">
+  <span id="volumeDisplay">100%</span>
+</div>
 
             <audio id="audioPlayer"></audio>
         </div>
@@ -1231,6 +1279,9 @@
         </div>
     </div>
     <!-- Cute Browser Window end -->
+
+
+
 
     <!-- Settings -->
     <div id="settings" class="window" style="display: none; width: 300px;">
@@ -1328,6 +1379,8 @@
     </div>
 
     <script>
+                const ghostIframes = [];
+
         /* music player script start */
         const playlist = [
             { title: "8 bit Paradise – kawaii", src: "music/8 bit Paradise – kawaii.mp3" },
@@ -1413,11 +1466,19 @@
             if (!audio.loop) nextSong();
         });
 
-        // Volume control
-        document.getElementById("volumeSlider").addEventListener("input", (e) => {
-            audio.volume = e.target.value;
-        });
+        const audio1 = document.getElementById("audioPlayer");
+const volumeSlider = document.getElementById("volumeSlider");
+const volumeDisplay = document.getElementById("volumeDisplay");
 
+// Set initial volume
+audio.volume = 1;
+
+// Update volume when slider changes
+volumeSlider.addEventListener("input", () => {
+  const volume = volumeSlider.value / 100;
+  audio.volume = volume;
+  volumeDisplay.textContent = Math.round(volume * 100) + "%";
+});
         // Time formatting
         function formatTime(seconds) {
             if (isNaN(seconds)) return "0:00";
@@ -2353,10 +2414,12 @@
         }
         function makeDraggable(el) {
     let offsetX, offsetY, isDragging = false;
-
     const desktop = document.getElementById("desktop");
 
     el.addEventListener("mousedown", (e) => {
+        // ❌ Ignore if clicked on input or textarea (like sliders)
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
         const elRect = el.getBoundingClientRect();
         const desktopRect = desktop.getBoundingClientRect();
 
@@ -2365,9 +2428,7 @@
 
         isDragging = true;
         el.style.zIndex = 1001;
-
-        // Prevent text selection during drag
-        e.preventDefault();
+        e.preventDefault(); // Prevent text selection
     });
 
     document.addEventListener("mousemove", (e) => {
@@ -2406,15 +2467,13 @@
                 el.style.transition = "transform 0.4s ease, opacity 0.4s ease";
                 el.style.transform = "scale(0)";
                 el.style.opacity = "0";
-
                 setTimeout(() => el.remove(), 400);
-            } else if (el.classList.contains("icon")) {
+            } else if (el.classList.contains("icon") && el.id !== "trash-can") {
                 const boingSound = document.getElementById("boing-sound");
                 if (boingSound) boingSound.play();
 
                 const maxX = desktop.offsetWidth - el.offsetWidth;
                 const maxY = desktop.offsetHeight - el.offsetHeight;
-
                 const newX = Math.floor(Math.random() * maxX);
                 const newY = Math.floor(Math.random() * maxY);
 
@@ -2643,6 +2702,7 @@
         }
         /* bubble script end */
         /* trash can script start */
+
         const trash = document.getElementById('trash-can');
         const trashRect = trash.getBoundingClientRect();
         const elRect = el.getBoundingClientRect();
@@ -2662,6 +2722,56 @@
             }, 400);
         }
         /* trash can script end */
+        /* ghost summon script */
+
+        function summonGhost() {
+    const iframe = document.createElement("iframe");
+    iframe.src = "ghost.html";
+    iframe.style.position = "fixed";
+    iframe.style.top = "0";
+    iframe.style.left = "0";
+    iframe.style.width = "100vw";
+    iframe.style.height = "100vh";
+    iframe.style.border = "none";
+    iframe.style.zIndex = "9999";
+    iframe.style.pointerEvents = "none";
+    iframe.classList.add("ghost-iframe");
+
+    document.body.appendChild(iframe);
+    ghostIframes.push(iframe);
+}
+        /* ghost summon script end */
+        /* ghost busters script */
+       function bustAllGhosts() {
+    const trap = document.getElementById("ghost-busters-icon");
+    const zapSound = document.getElementById("ghost-zap-sound");
+
+    if (!trap) return;
+
+    const trapRect = trap.getBoundingClientRect();
+
+    ghostIframes.forEach(iframe => {
+        const iframeRect = iframe.getBoundingClientRect();
+        const deltaX = trapRect.left + trapRect.width / 5 - (iframeRect.left + iframeRect.width / 2);
+        const deltaY = trapRect.top + trapRect.height / 5 - (iframeRect.top + iframeRect.height / 2);
+
+        iframe.style.transition = "transform 1s ease-in-out, opacity 1s ease-in-out";
+        iframe.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.1) rotate(1080deg)`;
+        iframe.style.opacity = "0";
+
+        if (zapSound) {
+            zapSound.currentTime = 0;
+            zapSound.play();
+        }
+
+        setTimeout(() => {
+            iframe.remove();
+        }, 1000);
+    });
+
+    ghostIframes.length = 0;
+}
+        /* ghost busters script end */
     </script>
     <!-- plane -->
 
@@ -2670,11 +2780,17 @@
     <div id="planeContainer"></div>
 
     <!-- plane end -->
+
     <!-- Bubble container (can be placed anywhere in body) -->
     <div id="bubbleContainer"></div>
     <audio id="popSound" src="sounds/pop.mp3" preload="auto"></audio>
 
     <!-- Bubble container end (can be placed anywhere in body) -->
+
+    <!-- ghost buster sfx -->
+    <audio id="ghost-zap-sound" src="sounds/yipee-45360.mp3" preload="auto"></audio>
+    <!-- ghost buster sfx end -->
+
 
 
 
